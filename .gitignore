@@ -1,3 +1,6 @@
+# Files not to be synced
+settings.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
