@@ -1,0 +1,34 @@
+---
+gui: No
+
+waitBeforeQuitting: Yes
+
+polito:
+    user: "s123456@studenti.polito.it"
+    password: "mySuperDuperPassword"
+    extensionPath: "C:\\Users\\user\\PolitoMaterialDownload\\politoit_utility.xpi"
+
+telegram:
+    messageType: "nothing"
+
+courses: []
+
+coursesRenaming: {}
+
+download:
+    mainFolderPath: "C:\\Users\\user\\Polito\\Corsi"
+    waitTime: 0.4
+    createEmptyIgnore: No
+    createEmptyRenaming: No
+    ignoreFileName: "Ignore.yaml"
+    renamingFileName: "Renaming.yaml"
+    invalidCharacters:
+        "/": "-"
+        ":": "."
+        "<": "-"
+        ">": "-"
+        '"': "'"
+        "\\": ""
+        "|": ""
+        "?": "."
+        "*": "."

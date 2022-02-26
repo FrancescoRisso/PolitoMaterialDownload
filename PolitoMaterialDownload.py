@@ -25,7 +25,7 @@ def main():
 
 	# Connect to the bot
 	log("INFO", f"Creating bot connection of type '{settings['telegram']['messageType']}'")
-	if initTelegram(settings["telegram"]["bot"], settings["telegram"]["chatId"], settings["telegram"]["messageType"]):
+	if initTelegram(settings["telegram"]):
 		log("INFO", "Bot connected correctly")
 	else:
 		quitProgram(None, "Error in the bot connection", settings["download"]["tmpDownloadFolder"])
@@ -62,16 +62,16 @@ def main():
 		if courseName in courses:
 
 			# Log
-			log("SAVE", f"Checking material from course '{courses[courseName]}'")
+			log("SAVE", f"Checking material from course '{os.path.basename(courses[courseName])}'")
 
 			# Open course page in a new tab
 			portale.execute_script(f"window.open(\"{course.get_attribute('href')}\", '_blank');")
 			portale.switch_to.window(portale.window_handles[1])
 
 			# Process the course and update the downloaded material list
-			downloadedMaterial[courseName] = processCourse(courses[courseName], settings["download"], portale)
-			if downloadedMaterial[courseName] == []:
-				del downloadedMaterial[courseName]
+			downloadedMaterial[courses[courseName]] = processCourse(courses[courseName], settings["download"], portale)
+			if downloadedMaterial[courses[courseName]] == []:
+				del downloadedMaterial[courses[courseName]]
 
 			# Close the tab
 			portale.close()
@@ -85,14 +85,17 @@ def main():
 		log("ERR", f"'{course}' not found")
 
 	# Log download recap
-	if len(downloadedMaterial.keys()) == 0:
-		telegramLog("\nNo files downloaded\n", "")
-	else:
-		telegramLog("\nDownloaded files:", "")
-		for course in downloadedMaterial:
-			telegramLog(f"- {course}", "")
-			for file in downloadedMaterial[course]:
-				telegramLog(f"  - {file}", "")
+	try:
+		if len(downloadedMaterial.keys()) == 0:
+			telegramLog("\nNo files downloaded\n", "")
+		else:
+			telegramLog("\nDownloaded files:", "")
+			for course in downloadedMaterial:
+				telegramLog(f"- {course}", "")
+				for file in downloadedMaterial[course]:
+					telegramLog(f"  - {file}", "")
+	except Exception:
+		log("ERR", "Bot is not connected")
 
 	# All done, quit
 	quitProgram(portale, "", settings["download"]["tmpDownloadFolder"])

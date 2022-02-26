@@ -75,6 +75,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 			folderLink = findInPortale(portale, xpath, True, False)
 			if folderLink == None:
 				log("ERR", f"Could not open folder {folderName}")
+				return
 			else:
 				folderLink = folderLink[n]
 

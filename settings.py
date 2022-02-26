@@ -1,6 +1,7 @@
-import json
+from yaml import Loader, load
 import os
 
+from quitProgram import setWaitBeforeQuitting
 from quitProgram import quitProgram
 from log import log
 
@@ -15,11 +16,22 @@ from log import log
 
 
 def getSettings():
-	log("INFO", "Loading settings")
 
 	# Load settings
-	with open("settings.json", "r") as f:
-		d = json.load(f)
+	with open("settings.yaml", "r") as f:
+		d = load(f, Loader)
+
+	# Check if waitBeforeQuitting is ok, and if so update the quitter
+	if "waitBeforeQuitting" in d:
+		if isinstance(d["waitBeforeQuitting"], bool):
+			setWaitBeforeQuitting(d["waitBeforeQuitting"])
+		else:
+			quitProgram(None, "Some settings are invalid", None)
+	else:
+		quitProgram(None, "Some settings are missing", None)
+	
+	# Log
+	log("INFO", "Loading settings")
 
 	# Check that all the main entries are present and of the correct type
 	for key in ["polito", "telegram", "download", "coursesRenaming"]:
@@ -91,6 +103,11 @@ def getSettings():
 
 	for rule in d["download"]["invalidCharacters"]:
 		if not isinstance(d["download"]["invalidCharacters"][rule], str) or not isinstance(rule, str):
+			quitProgram(None, "Some settings are invalid", None)
+
+	# Check that the ignore and rename file names are yaml file names
+	for key in ["ignoreFileName", "renamingFileName"]:
+		if not d["download"][key].endswith(".yaml"):
 			quitProgram(None, "Some settings are invalid", None)
 
 	# Add the download temporary folder path

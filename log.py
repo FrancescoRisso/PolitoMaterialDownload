@@ -25,7 +25,7 @@ def log(type, message):
 		try:
 			telegramLog(mess, type)
 		except Exception:
-			log("ERR", "Bot should be connected, but it isn't")
+			log("ERR", "Bot is not connected")
 	else:
 		tmpLog.append((mess, type))
 

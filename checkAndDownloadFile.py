@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from datetime import datetime
-import shutil
 import time
 import os
 
@@ -72,7 +71,7 @@ def checkAndDownloadFile(
 
 	# Compute the file's path in the folder (path relative to the main folder, where all the courses folders are)
 	filePathInFolder = applyRenaming(os.path.join(folderPathOnWebsite, fileName), renaming)
-
+	# print(renaming["regex"].items(), list(renaming["other"].items())[0][0] in os.path.join(folderPathOnWebsite, fileName), os.path.join(folderPathOnWebsite, fileName))
 	excluded = applyRenaming(filePathInFolder, {"other": {}, "regex": dict([(rule, "") for rule in ignore])})
 
 	# If the file is not desired, ignore it
@@ -84,6 +83,7 @@ def checkAndDownloadFile(
 	server_lastModified = findInPortale(portale, xpath, True, False)
 	if server_lastModified == None:
 		log("ERR", f"Could not find upload date for '{fileName}'")
+		return
 	else:
 		server_lastModified = datetime.strptime(server_lastModified[n].text.strip(), "%d/%m/%Y %H:%M:%S")
 
@@ -106,6 +106,7 @@ def checkAndDownloadFile(
 		download = findInPortale(portale, xpath, True, False)
 		if download == None:
 			log("ERR", f"Could not find download button for '{fileName}'")
+			return
 		else:
 			download[n].click()
 			time.sleep(settings["waitTime"])
@@ -122,7 +123,7 @@ def checkAndDownloadFile(
 		while len(os.listdir(settings["tmpDownloadFolder"])) != 0:
 
 			# Compute the absolute file path of the downloaded file (in the tmpDonwload folder)
-			finalFileName = os.path.join(settings["tmpDownloadFolder"], os.listdir(settings["tmpDownloadFolder"])[-1])
+			finalFileName = os.path.join(settings["tmpDownloadFolder"], sorted(os.listdir(settings["tmpDownloadFolder"]))[-1])
 
 			# If download is complete, move it to the correct location, then stop checking
 			if not finalFileName.endswith(".part"):
@@ -146,7 +147,8 @@ def checkAndDownloadFile(
 					time.sleep(0.05)
 				else:
 					log("ERR", f"Could not move '{os.path.basename(completeFilePath)}' to the correct folder. Deleting it")
-					shutil.rmtree(settings["tmpDownloadFolder"])
+					for file in os.listdir(settings["tmpDownloadFolder"]):
+						os.remove(os.path.join(settings["tmpDownloadFolder"], file))
 
 				break
 

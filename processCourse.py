@@ -25,20 +25,30 @@ from log import log
 
 def processCourse(nameFolder, settings, portale):
 	# Compute the folder path
-	path = os.path.join(settings["mainFolderPath"], validFileName(nameFolder, settings["invalidCharacters"]))
+	path = os.path.join(settings["mainFolderPath"], nameFolder)
 
 	# Init the list of downloaded files
 	downloaded = []
 
 	# If course folder does not exist, create it
-	if not os.path.exists(path):
-		os.makedirs(path)
+	try:	
+		if not os.path.exists(path):
+			os.makedirs(path)
+	except Exception:
+		log("ERR", f"Invalid course folder name: '{nameFolder}'")
+		return downloaded
 
-	# Import the renaming dictionary
+	# Import the renaming dictionary and check it is correct
 	renaming = importCourseConfig(path, settings["createEmptyRenaming"], settings["renamingFileName"], False)
+	if renaming == None:
+		log("ERR", "Invalid renaming file formatting")
+		return downloaded
 
-	# Import the ignore list
+	# Import the ignore list and check it is correct
 	ignore = importCourseConfig(path, settings["createEmptyIgnore"], settings["ignoreFileName"], True)
+	if ignore == None:
+		log("ERR", "Invalid ignore file formatting")
+		return downloaded
 
 	# In the course page, select the tab "Materiale"
 	xpath = "//a[@class='policorpolink'][normalize-space()='Materiale']"
@@ -68,9 +78,9 @@ def processCourse(nameFolder, settings, portale):
 			break
 		except RestartFolder:
 			continue
-		# except Exception:
-		# 	log("ERR", f"Error while working on '{nameFolder}'")
-		# 	return downloaded
+		except Exception:
+			log("ERR", f"Error while working on '{nameFolder}'")
+			return downloaded
 
 	# Return the list of downloaded files
 	return downloaded

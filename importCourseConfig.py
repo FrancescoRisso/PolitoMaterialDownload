@@ -1,5 +1,5 @@
+from yaml import Loader, Dumper, load, dump
 import os
-import json
 import re
 
 from log import log
@@ -27,7 +27,21 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
 		with open(os.path.join(path, fileName), "r") as f:
-			result = json.load(f)["list"] if isIgnore else json.load(f)
+			result = load(f, Loader)
+
+			# Check correct formatting
+			if isIgnore:
+				if not isinstance(result, list):
+					return None
+			else:
+				if (
+					not isinstance(result, dict)
+					or "regex" not in result
+					or "other" not in result
+					or not isinstance(result["regex"], dict)
+					or not isinstance(result["other"], dict)
+				):
+					return None
 
 			# Delete any invalid regex expression
 			deleteRegex = []
@@ -43,15 +57,10 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 					result.remove(expr)
 				else:
 					del result["regex"][expr]
-
-			# If some expressions have been removed, save the updated file
-			if len(deleteRegex) != 0:
-				with open(os.path.join(path, fileName), "w") as f:
-					json.dump({"list": result} if isIgnore else result, f, indent="\t")
 	else:
 		# If file did not exist, create an empty one if the user requested it
 		if createIfNotThere:
 			with open(os.path.join(path, fileName), "w") as f:
-				json.dump({"list": result} if isIgnore else result, f, indent="\t")
+				dump(result, f, Dumper, default_flow_style=False)
 
 	return result

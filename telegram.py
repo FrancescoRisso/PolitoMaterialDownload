@@ -11,16 +11,13 @@ initExecuted = False
 # 	Setup a chat with a telegram bot
 # 	---------------------------------------------------------------------
 # 	PARAMETERS:
-# 		- token: the bot token from where to send the messages
-# 		- chat: the id of the chat where to send messages
-# 		- type: the type of messages the user wants (nothing, error,
-# 				recap or log)
+# 		- settings: a dictionary containing the settings for the bot
 # 	---------------------------------------------------------------------
 # 	OUTPUT:
 # 		- whether the init was successful or not
 
 
-def initTelegram(token, chat, type):
+def initTelegram(settings):
 	global initExecuted
 	global chatId
 	global msgType
@@ -28,15 +25,15 @@ def initTelegram(token, chat, type):
 	global conn
 
 	# Store the settings
-	chatId = chat
-	msgType = type
+	msgType = settings["messageType"]
 	finalMessage = ""
 	initExecuted = True
 
 	# Try to create the connection item
 	try:
-		if type != "nothing":
-			conn = telebot.TeleBot(token)
+		if msgType != "nothing":
+			conn = telebot.TeleBot(settings["bot"])
+			chatId = settings["chatId"]
 		else:
 			conn = None
 		return True
@@ -73,7 +70,7 @@ def telegramLog(newMessageToInsert, type):
 
 	# Append the new message to the final message if the user requested the whole log,
 	# or if the message is an error or does not come from log (type=="")
-	if msgType == "log" or type == "ERR" or type == "":
+	if msgType == "log" or type == "ERR" or (type == "" and msgType != "error"):
 		finalMessage = f"{finalMessage}\n```\n{newMessageToInsert}```"
 		return
 
