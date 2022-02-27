@@ -14,6 +14,8 @@ Settings should be located in the same folder as the code, in a file called `set
 
 - All the special characters must be escaped by a `\`. For instance, in order to have the characters `\`, `'` and `"` you should write respectively `\\`, `\'` and `\"`. This applies to any string in any configuration file.
 
+- In order to navigate folders, you must use the character chosen by your operating system. This means that you must use `/` in Linux and macOS, but `\` in Windows (remember to escape it!).
+
 Here there is a void template:
 
 ```
@@ -25,7 +27,6 @@ waitBeforeQuitting:
 polito:
   user:
   password:
-  extensionPath:
 
 telegram:
   messageType:
@@ -68,7 +69,6 @@ download:
 
     -   `user`: your polito email (in the format `sXXXXXX@studenti.polito.it`).
     -   `password`: the password of your polito account.
-    -   `extensionPath`: the absolute path to the file `politoit_utility.xpi` (Note: remember to escape the `\` character).
 
 -   `telegram`: all the settings regarding your telegram notifications.
 
@@ -209,8 +209,9 @@ Furthermore, the renamed file name is not checked for illegal characters: you sh
 
 A possible usage of this feature is to change the folder tree: for example, you can set `"parentFolder" : "newFolder\\\\childFolder"`, so that every file in `parentFolder` in the Portale will result locally to be in a `childFolder` folder, which is nested into `newFolder`, which itself is located in the same location as where `parentFolder` would have been.
 
-Finally, be careful about escaping: the `\` character would become `\\` if you are renaming with normal strings, `\\\\` if you are using regex.
+Finally, be careful about escaping: in a regex, in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex (In a normal string `\\` and `/` are enough).
 
+Similarly, if you are using Linux or macOS, the 
 
 ## Examples of renaming files
 
@@ -227,7 +228,8 @@ Finally, be careful about escaping: the `\` character would become `\\` if you a
   regex:
     "2021-10-[0-9][0-9]": "A day of october 2021"
   other:
-    "Course guide\\": ""
+    "Course guide/": ""    # if on Linux or macOS
+	"Course guide\\": ""   # if on Windows
   ```
 	For instance, this rules will transform as follows:
 	- `\Slides\Lesson 10 (2021-10-11)` → `\Slides\Lesson 10 (A day of october 2021)`
@@ -236,7 +238,8 @@ Finally, be careful about escaping: the `\` character would become `\\` if you a
 
 - ```
   regex:
-    "Course guide\\\\": ""
+    "Course guide\\/": ""    # if on Linux or macOS
+    "Course guide\\\\": ""   # if on Windows
   other: {}
   ```
 	For instance, this rules will transform as follows:
@@ -269,12 +272,13 @@ or, if you do not want to ignore anything:
 
 All the strings are considered as regex.
 
-As before, you have to use `\\\\` to navigate folders.
+As before, be careful about escaping: in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex.
 
 ## Examples of ignoring files
 
 - ```
-  ["Exams\\\\"]
+  ["Exams\\/"]    # if on Linux or macOS
+  ["Exams\\\\"]   # if on Windows
   ```
 	This would ignore the folder `Exams` and all its content
 
@@ -284,7 +288,9 @@ As before, you have to use `\\\\` to navigate folders.
   This wolud check all files
 
 - ```
-  - "Course guide\\\\"
-  - "Extra material\\\\[\\s\\S]*.pdf"
+  - "Course guide\\/"                   # if on Linux or macOS
+  - "Extra material\\/[\\s\\S]*.pdf"    # if on Linux or macOS
+  - "Course guide\\\\"                  # if on Windows
+  - "Extra material\\\\[\\s\\S]*.pdf"   # if on Windows
   ```
 	This wolud ignore the folder `Course guide` and all its content, plus all the pdfs directly nested into the folder `Extra material`

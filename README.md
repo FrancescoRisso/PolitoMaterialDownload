@@ -48,7 +48,61 @@ This might mean that there are still strange problems not picked up by the lab-t
 
 ## Automating it
 
-_Work in progress_
+I have an Ubuntu always on server, and I save my Polito files on a Dropbox folder. For these reasons, I could use that server to automate the execution of this program, and get the files uploaded directly to my Dropbox (thus, finding them on my PC).
+
+Here are the steps I followed:
+
+- Installed dropbox, following partially [this guide](https://www.fosslinux.com/45045/headless-dropbox-ubuntu-server.htm) (Not the best guide, but it is what I found: I had to remove the file it told me to create in `\etc\init.d`, and I had to change the service config).
+My service config is:
+	```
+	[Unit]
+	Description=Dropbox Daemon
+	After=network.target
+
+	[Service]
+	ExecStart=/bin/sh -c '/opt/dropbox/dropboxd start'
+	ExecStop=/bin/sh -c '/opt/dropbox/dropboxd stop'
+	PIDFile=${HOME}/.dropbox/dropbox.pid
+	User=downloader
+	Group=downloader
+	Type=forking
+	Restart=on-failure
+	RestartSec=5
+	StartLimitInterval=60s
+	StartLimitBurst=3
+
+	[Install]
+	WantedBy=multi-user.target
+	```
+	If you install Dropbox too, from this file change User and Group to your server username, and change the path in ExecStart and ExecStop.
+
+- Downloaded the code via `git clone`.
+
+- Configured the settings file (a useful command was `readlink -f <file>` to get the absolute path to a file or a directory).
+
+- Run the program manually once via the command `python3 PolitoMaterialDownload.py`. I higly recommend doing this to check that all settings are ok, since every error before the loading of the setting `waitBeforeQuitting` would require user interaction to quit (and this would make the program hang forever). If you checked that the settings were correct, this problem should not happen anymore.
+
+- There was a warning:
+	```
+	/usr/lib/python3/dist-packages/requests/__init__.py:89: RequestsDependencyWarning: urllib3 (1.26.8) or chardet (3.0.4) doesn't match a supported version!
+	```
+	I solved it by executing `pip3 install --upgrade requests`.
+
+- Created using `mkdir` and `touch` a file for logging and a file for errors (I did it inside `\var\log`).
+
+- Executed the command `sudo chmod a+w FILE` on both the logging and error files.
+
+- Scheduled the script to be executed every hour, by editing crontab file (via the command `crontab -e`), inserting the following line:
+	```
+	0 * * * * python3 /home/downloader/PolitoMaterialDownload/PolitoMaterialDownload.py "/home/downloader/PolitoMaterialDownload" 1>> /var/log/downloader/log.log 2>> /var/log/downloader/error.log
+	```
+	If you want to schedule the script too, you should replace:
+	- the `0 * * * *` with a valid cron setting of your choice (this one is "every hour").
+	- `/home/downloader/PolitoMaterialDownload/PolitoMaterialDownload.py` with the full path to the file `PolitoMaterialDownload.py`.
+	- `"/home/downloader/PolitoMaterialDownload"` with the full path to the folder where the code is (please enclose it in double quotes as I did).
+	- `/var/log/downloader/log.log` with the path to the file where you want your main log to be stored.
+	- `/var/log/downloader/error.log` with the path to the file where you want your error log to be stored (can also be the same as above).<br>
+		Please note that all "ERR" logs would still be sent to the first file: this is only in case the program crashes in a very strange way.
 
 ## Ignoring or renaming files or folders
 
@@ -74,8 +128,12 @@ If you already own a Telegram bot, I have good news for you: since this tool doe
 
 If you do not own a Telegram bot, creating it is simple: in the Telegram app, start a chat with [@BotFather](https://t.me/botfather), send the `/newbot` command, give a name and a tag to your bot and you're done, you just have to copy the token that [@BotFather](https://t.me/botfather) gives you
 
-## Important note
+## Important notes
 
-The software uses a temporary download folder, which is a folder called `tmpDownload` inside the folder where the code is. This folder is emptied and deleted every time the program runs, so please be advised that if you manually create a folder with that name, and store some files inside, they would be deleted. 
+- The software uses a temporary download folder, which is a folder called `tmpDownload` inside the folder where the code is. This folder is emptied and deleted every time the program runs, so please be advised that if you manually create a folder with that name, and store some files inside, they would be deleted. 
 
-
+- I have tested this program on Windows and Linux, but I could not try it on macOS. On Windows it worked perfectly to me, while on Linux I encountered this warning:
+	```
+	/usr/lib/python3/dist-packages/requests/__init__.py:89: RequestsDependencyWarning: urllib3 (1.26.8) or chardet (3.0.4) doesn't match a supported version!
+	```
+	It does not really affect the program, but if you find it annoying you can fix it via the command `pip3 install --upgrade requests` to fix it.
