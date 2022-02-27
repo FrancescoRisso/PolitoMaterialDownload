@@ -11,14 +11,17 @@ from log import log
 # 	if it is considered a valid settings for the program not to crash.
 # 	Otherwhise, an error log would be written and the program would quit
 # 	---------------------------------------------------------------------
+# 	PARAMETERS:
+# 		- argv: the argv received by the main
+# 	---------------------------------------------------------------------
 # 	OUTPUT:
 # 		- a dictionary containing all the settings
 
 
-def getSettings():
+def getSettings(argv):
 
 	# Load settings
-	with open("settings.yaml", "r") as f:
+	with open(os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "settings.yaml"), "r") as f:
 		d = load(f, Loader)
 
 	# Check if waitBeforeQuitting is ok, and if so update the quitter
@@ -29,7 +32,7 @@ def getSettings():
 			quitProgram(None, "Some settings are invalid", None)
 	else:
 		quitProgram(None, "Some settings are missing", None)
-	
+
 	# Log
 	log("INFO", "Loading settings")
 
@@ -51,7 +54,7 @@ def getSettings():
 		quitProgram(None, "Some settings are invalid", None)
 
 	# Check that all the entries for the "polito" key are present and of the correct type
-	for key in ["user", "password", "extensionPath"]:
+	for key in ["user", "password"]:
 		if not key in d["polito"]:
 			quitProgram(None, "Some settings are missing", None)
 		if not isinstance(d["polito"][key], str):
@@ -110,8 +113,9 @@ def getSettings():
 		if not d["download"][key].endswith(".yaml"):
 			quitProgram(None, "Some settings are invalid", None)
 
-	# Add the download temporary folder path
+	# Add the download temporary folder path and the politoit extension path
 	d["download"]["tmpDownloadFolder"] = os.path.join(os.getcwd(), "tmpDownload")
+	d["polito"]["extensionPath"] = os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "politoit_utility.xpi")
 
 	# Return the settings
 	return d

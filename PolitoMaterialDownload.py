@@ -1,5 +1,6 @@
 import shutil
 import time
+import sys
 import os
 
 from telegram import initTelegram, telegramLog
@@ -16,7 +17,7 @@ def main():
 	LOGchangeTelegramConn(False)
 
 	# Load the settings
-	settings = getSettings()
+	settings = getSettings(sys.argv)
 
 	# Reset the tmpDownload folder
 	if os.path.exists(settings["download"]["tmpDownloadFolder"]):
