@@ -140,7 +140,6 @@ waitBeforeQuitting: No
 polito:
   user: "s123456@studenti.polito.it"
   password: "mySuperDuperPassword"
-  extensionPath: "C:\\Users\\user\\PolitoMaterialDownload\\politoit_utility.xpi"
 
 telegram:
   messageType: "recap"

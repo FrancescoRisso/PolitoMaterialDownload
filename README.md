@@ -132,6 +132,8 @@ If you do not own a Telegram bot, creating it is simple: in the Telegram app, st
 
 - The software uses a temporary download folder, which is a folder called `tmpDownload` inside the folder where the code is. This folder is emptied and deleted every time the program runs, so please be advised that if you manually create a folder with that name, and store some files inside, they would be deleted. 
 
+- If you launch the program from a folder that is not the code folder, you should launch it with an extra parameter, which is the location of the code folder (as what I did in the crontab settings in the section "Automating it").
+
 - I have tested this program on Windows and Linux, but I could not try it on macOS. On Windows it worked perfectly to me, while on Linux I encountered this warning:
 	```
 	/usr/lib/python3/dist-packages/requests/__init__.py:89: RequestsDependencyWarning: urllib3 (1.26.8) or chardet (3.0.4) doesn't match a supported version!
