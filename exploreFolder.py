@@ -37,7 +37,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 	time.sleep(settings["waitTime"])
 
 	# Take the number of folders
-	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]"
+	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]"
 	folders = findInPortale(portale, xpath, True, False)
 	if folders != None:
 		folders = len(folders)
@@ -51,7 +51,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 		for i in range(maxTries):
 			folder = portale.find_elements(
 				By.XPATH,
-				f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]",
+				f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]",
 			)
 			if len(folder) == folders:
 				break
@@ -71,7 +71,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 		if replaced[-4:] == excluded[-4:]:
 
 			# Get the clickable link of the folder
-			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]/../.."
+			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]/../.."
 			folderLink = findInPortale(portale, xpath, True, False)
 			if folderLink == None:
 				log("ERR", f"Could not open folder {folderName}")
@@ -90,7 +90,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 			# When adding a folder, all its subfolders are removed to ease the job of applyRenaming()
 
 			# Remove all the subfolders from the ignored list
-			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]"
+			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]"
 			subfolders = findInPortale(portale, xpath, True, False)
 			if subfolders != None:
 				for subfolder in subfolders:
@@ -115,7 +115,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 	time.sleep(settings["waitTime"])
 
 	# Take the number of files
-	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding text-warning')]"
+	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding text-warning') and not(contains(@class, 'videoLezLink'))]"
 	files = findInPortale(portale, xpath, True, False)
 	if files != None:
 		files = len(files)

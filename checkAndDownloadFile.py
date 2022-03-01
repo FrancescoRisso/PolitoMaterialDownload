@@ -43,7 +43,7 @@ def checkAndDownloadFile(
 	for i in range(maxTries):
 		files = portale.find_elements(
 			By.XPATH,
-			f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding text-warning')]",
+			f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding text-warning')]",
 		)
 		if len(files) == filesNumber:
 			break
@@ -56,7 +56,7 @@ def checkAndDownloadFile(
 
 	# If the displayed file name has been truncated (ends with ...), take it from its link's title (see the html of the Portale)
 	if fileName.endswith("..."):
-		xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding text-warning')]/.."
+		xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding text-warning')]/.."
 		file = findInPortale(portale, xpath, True, False)
 		if file == None:
 			log("ERR", f"Could not find complete name for '{fileName}'")
@@ -79,7 +79,7 @@ def checkAndDownloadFile(
 		return
 
 	# Take the date of the updload of the file to the server
-	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding text-warning')]/../../../td[4]"
+	xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding text-warning')]/../../../td[4]"
 	server_lastModified = findInPortale(portale, xpath, True, False)
 	if server_lastModified == None:
 		log("ERR", f"Could not find upload date for '{fileName}'")
@@ -102,7 +102,7 @@ def checkAndDownloadFile(
 	):
 
 		# Click the download button
-		xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr//a//span[contains(@class,'ng-binding text-warning')]/../../../td[1]/a[1]"
+		xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding text-warning')]/../../../td[1]/a[1]"
 		download = findInPortale(portale, xpath, True, False)
 		if download == None:
 			log("ERR", f"Could not find download button for '{fileName}'")
