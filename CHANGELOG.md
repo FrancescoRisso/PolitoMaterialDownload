@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.3.3
+
+BUG FIXES:
+
+-   The error `Could not install extension` had an outdated suggestion, updated
+
 ## Version 1.3.2
 
 BUG FIXES:
