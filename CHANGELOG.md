@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.4.0
+
+-	Improved the "ignore file" algorithm
+-	`settings.py` renamed to `importSettings.py`
+
 ## Version 1.3.3
 
 BUG FIXES:

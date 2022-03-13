@@ -75,7 +75,12 @@ def checkAndDownloadFile(
 	excluded = applyRenaming(filePathInFolder, {"other": {}, "regex": dict([(rule, "") for rule in ignore])})
 
 	# If the file is not desired, ignore it
-	if filePathInFolder[-4:] != excluded[-4:]:
+	try:
+		if not os.path.samefile(filePathInFolder, excluded):
+			return
+	except Exception:
+		# If error occurred, the excluded is probably an invalid file name, such as a folder name without the final slashes
+		# In that case, it should be ignored
 		return
 
 	# Take the date of the updload of the file to the server

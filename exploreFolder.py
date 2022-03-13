@@ -67,8 +67,19 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 		replaced = applyRenaming(folderPath, renaming)
 		excluded = applyRenaming(replaced, {"other": {}, "regex": dict([(rule, "") for rule in ignore])})
 
+		shouldIgnore = True
+
+		# If the folder is not desired, ignore it
+		try:
+			if os.path.samefile(excluded, excluded):
+				shouldIgnore = False
+		except Exception:
+			# If error occurred, the excluded is probably an invalid file name, such as a folder name without the final slashes
+			# In that case, it should be ignored
+			pass
+
 		# If the folder is not undesired, open it and recur
-		if replaced[-4:] == excluded[-4:]:
+		if not shouldIgnore:
 
 			# Get the clickable link of the folder
 			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]/../.."

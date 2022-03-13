@@ -9,7 +9,7 @@ from findInPortale import findInPortale
 from processCourse import processCourse
 from authenticate import authenticate
 from quitProgram import quitProgram
-from settings import getSettings
+from importSettings import getSettings
 
 
 def main():
