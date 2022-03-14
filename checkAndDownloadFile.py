@@ -71,16 +71,9 @@ def checkAndDownloadFile(
 
 	# Compute the file's path in the folder (path relative to the main folder, where all the courses folders are)
 	filePathInFolder = applyRenaming(os.path.join(folderPathOnWebsite, fileName), renaming)
-	# print(renaming["regex"].items(), list(renaming["other"].items())[0][0] in os.path.join(folderPathOnWebsite, fileName), os.path.join(folderPathOnWebsite, fileName))
-	excluded = applyRenaming(filePathInFolder, {"other": {}, "regex": dict([(rule, "") for rule in ignore])})
+	excluded = applyRenaming(filePathInFolder, ignore)
 
-	# If the file is not desired, ignore it
-	try:
-		if not os.path.samefile(filePathInFolder, excluded):
-			return
-	except Exception:
-		# If error occurred, the excluded is probably an invalid file name, such as a folder name without the final slashes
-		# In that case, it should be ignored
+	if filePathInFolder != excluded:
 		return
 
 	# Take the date of the updload of the file to the server

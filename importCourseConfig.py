@@ -22,7 +22,7 @@ from log import log
 
 def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 	# Init the empty renaming dict
-	result = [] if isIgnore else {"regex": {}, "other": {}}
+	result = {"regex": {}, "other": {}}
 
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
@@ -30,22 +30,28 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 			result = load(f, Loader)
 
 			# Check correct formatting
+			if (
+				not isinstance(result, dict)
+				or "regex" not in result
+				or "other" not in result
+				or not isinstance(result["regex"], list if isIgnore else dict)
+				or not isinstance(result["other"], list if isIgnore else dict)
+			):
+				return None
+
 			if isIgnore:
-				if not isinstance(result, list):
-					return None
-			else:
-				if (
-					not isinstance(result, dict)
-					or "regex" not in result
-					or "other" not in result
-					or not isinstance(result["regex"], dict)
-					or not isinstance(result["other"], dict)
-				):
-					return None
+				d = {}
+				for rule in result["regex"]:
+					d[rule] = ""
+				result["regex"] = d
+				d = {}
+				for rule in result["other"]:
+					d[rule] = ""
+				result["other"] = d
 
 			# Delete any invalid regex expression
 			deleteRegex = []
-			for expr in result if isIgnore else result["regex"]:
+			for expr in result["regex"]:
 				try:
 					re.compile(expr)
 				except re.error:
@@ -54,7 +60,7 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 
 			for expr in deleteRegex:
 				if isIgnore:
-					result.remove(expr)
+					result["regex"].remove(expr)
 				else:
 					del result["regex"][expr]
 	else:

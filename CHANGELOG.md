@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 1.5.0
+
+NOTE: You have to change your "Ignore" file due to changes in its format
+
+- Fixed wrong logic from last commit
+- Changed "ignore" file format, to avoid confusing behavior
+- Updated documentation to explain that
+
+BUG FIXES:
+
+- Uncommented some unintentionally commented code
+
 ## Version 1.4.0
 
 -	Improved the "ignore file" algorithm

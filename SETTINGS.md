@@ -4,17 +4,17 @@
 
 Settings should be located in the same folder as the code, in a file called `settings.yaml`. Before digging into details, remember that:
 
-- Unless explicitely stated, each setting is mandatory.
+-   Unless explicitely stated, each setting is mandatory.
 
-- The order in which settings appear is not important, as long as they are nested in the correct way.
+-   The order in which settings appear is not important, as long as they are nested in the correct way.
 
-- Please insert numbers and boolean values as just the value, while wrapping strings in double quotes (`"`).
+-   Please insert numbers and boolean values as just the value, while wrapping strings in double quotes (`"`).
 
-- YAML does not like tabs. Please use only spaces as indentation characters.
+-   YAML does not like tabs. Please use only spaces as indentation characters.
 
-- All the special characters must be escaped by a `\`. For instance, in order to have the characters `\`, `'` and `"` you should write respectively `\\`, `\'` and `\"`. This applies to any string in any configuration file.
+-   All the special characters must be escaped by a `\`. For instance, in order to have the characters `\`, `'` and `"` you should write respectively `\\`, `\'` and `\"`. This applies to any string in any configuration file.
 
-- In order to navigate folders, you must use the character chosen by your operating system. This means that you must use `/` in Linux and macOS, but `\` in Windows (remember to escape it!).
+-   In order to navigate folders, you must use the character chosen by your operating system. This means that you must use `/` in Linux and macOS, but `\` in Windows (remember to escape it!).
 
 Here there is a void template:
 
@@ -62,7 +62,7 @@ download:
 
 -   `waitBeforeQuitting`: whether the program should ask the user to hit enter when the execution finishes. This might be useful in case the terminal you are running the program in closes immediately when the program ends, not allowing you to read the log.<br>
     I suggest using it if you are running the program manually with an automatically-closing terminal (such as in windows the `right-click > open with > python`), while I recommend to remove the wait if you are running the program on schedule, because it might cause problems.<br>
-	This setting is assumed True before being loaded. This means that, in case the program cannot open or parse the settings file, or in case this setting is not present or invalid, the program will always ask you to hit enter before exiting.<br>
+    This setting is assumed True before being loaded. This means that, in case the program cannot open or parse the settings file, or in case this setting is not present or invalid, the program will always ask you to hit enter before exiting.<br>
     Possible values are `True`, `Yes` and `On` if you want the program to wait for an input before quitting, `False`, `No`, `Off` if you do not want it.
 
 -   `polito`: all the settings regarding your polito account.
@@ -102,16 +102,20 @@ download:
 
 -   `coursesRenaming`: if you want some courses to have a folder name which is different from the course name in the Portale della didattica, write here the coupling oldName - newName. Here you can also manipulate the folder structure, as in the examples below (please use `\\` to navigate folders); paths must be relative from `mainFolderPath` (see below).<br>
     This can be written either like a python dictionary:
+
     ```
-	coursesRenaming: { "course1": "course1InFolder", "course2": "folder\\course2", "course3": "..\\course3" }
-	```
+    coursesRenaming: { "course1": "course1InFolder", "course2": "folder\\course2", "course3": "..\\course3" }
+    ```
+
     or using the same formatting as the rest of the document (please indent at least one space more than `coursesRenaming`):
+
     ```
-	coursesRenaming:
-	  "course1": "course1InFolder"
-	  "course2": "folder\\course2"
-	  "course3": "..\\course3"
-	```
+    coursesRenaming:
+      "course1": "course1InFolder"
+      "course2": "folder\\course2"
+      "course3": "..\\course3"
+    ```
+
     If you do not want any renaming, use `coursesRenaming: {}`.<br>
     Please be aware that this folder name will not be checked for being a possible folder name, so please select a valid one, or the course will not be processed.
 
@@ -129,7 +133,7 @@ download:
     -   `invalidCharacters`: determines how the program should replace the characters that cannot be part of a file name. You should insert what each one gets replaced with (can also be an empty string, `""`).<br>
         Characters already present in the void file above are all the ones considered invalid by Windows, which is the most stringent operating system. If you are running on another operating system where some of these characters are allowed, you can remove them from the list.
 
-## Example of  `settings.yaml`
+## Example of `settings.yaml`
 
 ```
 ---
@@ -172,7 +176,6 @@ download:
     "*": "."
 ```
 
-
 ## Renaming files and folders
 
 You can set the script so that a certain file or folder in the Portale will have a different name (and path) locally.
@@ -210,39 +213,41 @@ A possible usage of this feature is to change the folder tree: for example, you 
 
 Finally, be careful about escaping: in a regex, in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex (In a normal string `\\` and `/` are enough).
 
-Similarly, if you are using Linux or macOS, the 
-
 ## Examples of renaming files
 
-- ```
-  regex: {}
-  other:
-    "Exams": "Old exams"
-  ```
-	For instance, this rules will transform as follows:
-	- `\Exams\2020\Exam.pdf` → `\Old exams\2020\Exam.pdf`
-	- `\Exams.pdf` → `\Old exams.pfd`
+-   ```
+    regex: {}
+    other:
+      "Exams": "Old exams"
+    ```
 
-- ```
-  regex:
-    "2021-10-[0-9][0-9]": "A day of october 2021"
-  other:
-    "Course guide/": ""    # if on Linux or macOS
-	"Course guide\\": ""   # if on Windows
-  ```
-	For instance, this rules will transform as follows:
-	- `\Slides\Lesson 10 (2021-10-11)` → `\Slides\Lesson 10 (A day of october 2021)`
-	- `\Slides\Lesson 12 (2021-10-28)` → `\Slides\Lesson 12 (A day of october 2021)`
-	- `\Utils\Course guide\Guide.pdf` → `\Utils\Guide.pfd`
+    For instance, this rules will transform as follows:
 
-- ```
-  regex:
-    "Course guide\\/": ""    # if on Linux or macOS
-    "Course guide\\\\": ""   # if on Windows
-  other: {}
-  ```
-	For instance, this rules will transform as follows:
-	- `\Utils\Course guide\Guide.pdf` → `\Utils\Guide.pfd`
+    -   `\Exams\2020\Exam.pdf` → `\Old exams\2020\Exam.pdf`
+    -   `\Exams.pdf` → `\Old exams.pfd`
+
+-   ```
+    regex:
+      "2021-10-[0-9][0-9]": "A day of october 2021"
+    other:
+      "Course guide/": ""    # if on Linux or macOS
+    "Course guide\\": ""   # if on Windows
+    ```
+
+    For instance, this rules will transform as follows:
+
+    -   `\Slides\Lesson 10 (2021-10-11)` → `\Slides\Lesson 10 (A day of october 2021)`
+    -   `\Slides\Lesson 12 (2021-10-28)` → `\Slides\Lesson 12 (A day of october 2021)`
+    -   `\Utils\Course guide\Guide.pdf` → `\Utils\Guide.pfd`
+
+-   ```
+    regex:
+      "Course guide\\/": ""    # if on Linux or macOS
+      "Course guide\\\\": ""   # if on Windows
+    other: {}
+    ```
+    For instance, this rules will transform as follows:
+    -   `\Utils\Course guide\Guide.pdf` → `\Utils\Guide.pfd`
 
 ## Ignoring files and folders
 
@@ -253,43 +258,63 @@ In order to do so, you have to create in each course folder a `.yaml` file, call
 This file must be formatted as follows:
 
 ```
-["ignore1", "ignore2"]
+regex: ["ignore1", "ignore2"]
+other: ["ignore1", "ignore2"]
 ```
 
 or:
 
 ```
-- "ignore1"
-- "ignore2"
+regex:
+  - "ignore1"
+  - "ignore2"
+other:
+  - "ignore1"
+  - "ignore2"
 ```
 
-or, if you do not want to ignore anything:
+If you do not want to insert any rule in one of the fields, use `[]` as value
 
-```
-[]
-```
+As before, strings in `regex` will be considered as regex, while strings in `other` will be treated as simple strings.
 
-All the strings are considered as regex.
+Still, be careful about escaping: in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex. In a normal string, `\\` and `/` are enough.
 
-As before, be careful about escaping: in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex.
+A folder path can either end with the folder name, or can be followed by a slash: there is no difference
 
 ## Examples of ignoring files
 
-- ```
-  ["Exams\\/"]    # if on Linux or macOS
-  ["Exams\\\\"]   # if on Windows
-  ```
-	This would ignore the folder `Exams` and all its content
+-   ```
+    regex: ["Exams\\/"]    # if on Linux or macOS
+    regex: ["Exams\\\\"]   # if on Windows
+    other: []
+    ```
+    This would ignore the folder `Exams` and all its content
+-   ```
+    regex: []
+    other: ["Exams/"]    # if on Linux or macOS
+    other: ["Exams\\"]   # if on Windows
+    ```
+    This would ignore the folder `Exams` and all its content
+-   ```
+    regex: []
+    other: ["Exams"]
+    ```
 
-- ```
-  []
-  ```
-  This wolud check all files
+    This would ignore any file and folder that contain the string `Exams`
 
-- ```
-  - "Course guide\\/"                   # if on Linux or macOS
-  - "Extra material\\/[\\s\\S]*.pdf"    # if on Linux or macOS
-  - "Course guide\\\\"                  # if on Windows
-  - "Extra material\\\\[\\s\\S]*.pdf"   # if on Windows
-  ```
-	This wolud ignore the folder `Course guide` and all its content, plus all the pdfs directly nested into the folder `Extra material`
+-   ```
+    regex: []
+    other: []
+    ```
+
+    This wolud check all files
+
+-   ```
+    regex:
+      - "Course guide\\/"                   # if on Linux or macOS
+      - "Extra material\\/[\\s\\S]*.pdf"    # if on Linux or macOS
+      - "Course guide\\\\"                  # if on Windows
+      - "Extra material\\\\[\\s\\S]*.pdf"   # if on Windows
+    other: []
+    ```
+    This wolud ignore the folder `Course guide` and all its content, plus all the pdfs directly nested into the folder `Extra material`

@@ -78,9 +78,9 @@ def processCourse(nameFolder, settings, portale):
 			break
 		except RestartFolder:
 			continue
-		#except Exception:
-		#	log("ERR", f"Error while working on '{nameFolder}'")
-		#	return downloaded
+		except Exception:
+			log("ERR", f"Error while working on '{nameFolder}'")
+			return downloaded
 
 	# Return the list of downloaded files
 	return downloaded

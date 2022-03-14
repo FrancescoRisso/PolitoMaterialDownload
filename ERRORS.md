@@ -33,4 +33,4 @@ Invalid ignore file formatting | The format of the ignore file is not correct | 
 Invalid renaming file formatting | The format of the renaming file is not correct | Ignores the course | Check that your renaming file is compliant with what explained [here](SETTINGS.md)
 Some settings are invalid | Some settings are of wrong data type (such as a boolean value inserted in quotes, as if it was a string) | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
 Some settings are missing | There are some missing settings | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
-
+Your operating system (`OS`) is not is not recognised | Either some code problems occurred, or your operating system is not currently supported | Quits | Open a bug report

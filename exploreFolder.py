@@ -2,8 +2,10 @@ from selenium.webdriver.common.by import By
 import time
 import os
 
+from getFolderCharacterSeparator import getFolderCharacterSeparator
 from checkAndDownloadFile import checkAndDownloadFile
 from findInPortale import findInPortale
+from quitProgram import quitProgram
 from validFileName import validFileName
 from applyRenaming import applyRenaming
 from log import log
@@ -61,25 +63,21 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 
 		folder = folder[n]
 		folderName = folder.text
-		folderPath = os.path.join(websitePath, validFileName(folderName, settings["invalidCharacters"]))
+
+		separator = getFolderCharacterSeparator(False)
+		if separator not in ["\\\\", "\\", "\\/", "/"]:
+			quitProgram(portale, f"Your operating system ({separator}) is not recognised", settings["tmpDownloadFolder"])
+
+		folderPath = os.path.join(
+			websitePath, validFileName(folderName, settings["invalidCharacters"])
+		) + getFolderCharacterSeparator(False)
 
 		# Check if folder is desired or not
 		replaced = applyRenaming(folderPath, renaming)
-		excluded = applyRenaming(replaced, {"other": {}, "regex": dict([(rule, "") for rule in ignore])})
-
-		shouldIgnore = True
-
-		# If the folder is not desired, ignore it
-		try:
-			if os.path.samefile(excluded, excluded):
-				shouldIgnore = False
-		except Exception:
-			# If error occurred, the excluded is probably an invalid file name, such as a folder name without the final slashes
-			# In that case, it should be ignored
-			pass
+		excluded = applyRenaming(replaced, ignore)
 
 		# If the folder is not undesired, open it and recur
-		if not shouldIgnore:
+		if replaced == excluded:
 
 			# Get the clickable link of the folder
 			xpath = f"(//tbody[contains(@class, 'file-item')])[{'2' if thereIsDropbox else '1'}]//tr[not(contains(@class, 'ng-hide'))]//a//span[contains(@class,'ng-binding') and not(contains(@class, 'text-warning'))]/../.."
@@ -106,8 +104,8 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 			if subfolders != None:
 				for subfolder in subfolders:
 					folderPathDoubleBackslash = folderPath.replace("\\", "\\\\")
-					if f"{folderPathDoubleBackslash}\\\\{subfolder.text}[\\s\\S]*" in ignore:
-						ignore.remove(f"{folderPathDoubleBackslash}\\\\{subfolder.text}[\\s\\S]*")
+					if f"{folderPathDoubleBackslash}\\\\{subfolder.text}[\\s\\S]*" in ignore["regex"]:
+						del ignore["regex"][f"{folderPathDoubleBackslash}\\\\{subfolder.text}[\\s\\S]*"]
 
 			# Return to the parent folder
 			xpath = "//ol[contains(@class,'breadcrumb')]/li[position() = (last()-2)]/a"
@@ -120,7 +118,7 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 
 			# Add the current folder to the ignored list
 			folderPathDoubleBackslash = folderPath.replace("\\", "\\\\")
-			ignore.append(f"{folderPathDoubleBackslash}[\\s\\S]*")
+			ignore["regex"][f"{folderPathDoubleBackslash}[\\s\\S]*"] = ""
 
 	# Wait for the table to be correctly loaded again
 	time.sleep(settings["waitTime"])

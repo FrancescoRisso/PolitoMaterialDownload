@@ -12,6 +12,9 @@ from quitProgram import quitProgram
 from importSettings import getSettings
 
 
+# MAKE ALSO IGNORE AS REGEX/OTHER
+
+
 def main():
 	# Setup logger for the phase "before connecting to the telegram bot"
 	LOGchangeTelegramConn(False)
