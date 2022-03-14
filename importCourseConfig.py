@@ -22,7 +22,7 @@ from log import log
 
 def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 	# Init the empty renaming dict
-	result = {"regex": {}, "other": {}}
+	result = {"regex": [] if isIgnore else {}, "other": [] if isIgnore else {}}
 
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
