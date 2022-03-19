@@ -4,7 +4,6 @@ from importCourseConfig import importCourseConfig
 from restartFolder import RestartFolder
 from findInPortale import findInPortale
 from exploreFolder import exploreFolder
-from validFileName import validFileName
 from log import log
 
 
@@ -38,17 +37,19 @@ def processCourse(nameFolder, settings, portale):
 		log("ERR", f"Invalid course folder name: '{nameFolder}'")
 		return downloaded
 
-	# Import the renaming dictionary and check it is correct
-	renaming = importCourseConfig(path, settings["createEmptyRenaming"], settings["renamingFileName"], False)
+	# Import the renaming dictionary and check if it is correct
+	renaming = importCourseConfig(path, settings["createEmptyRenaming"], settings["renamingFileName"], False, settings["os"])
 	if renaming == None:
 		log("ERR", "Invalid renaming file formatting")
 		return downloaded
 
-	# Import the ignore list and check it is correct
-	ignore = importCourseConfig(path, settings["createEmptyIgnore"], settings["ignoreFileName"], True)
+	# Import the ignore list and check if it is correct
+	ignore = importCourseConfig(path, settings["createEmptyIgnore"], settings["ignoreFileName"], True, settings["os"])
 	if ignore == None:
 		log("ERR", "Invalid ignore file formatting")
 		return downloaded
+
+	return downloaded
 
 	# In the course page, select the tab "Materiale"
 	xpath = "//a[@class='policorpolink'][normalize-space()='Materiale']"

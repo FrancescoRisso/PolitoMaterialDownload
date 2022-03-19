@@ -1,3 +1,4 @@
+import platform
 from yaml import Loader, load
 import os
 
@@ -29,9 +30,9 @@ def getSettings(argv):
 		if isinstance(d["waitBeforeQuitting"], bool):
 			setWaitBeforeQuitting(d["waitBeforeQuitting"])
 		else:
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, "Setting 'waitBeforeQuitting' is incorrect", None)
 	else:
-		quitProgram(None, "Some settings are missing", None)
+		quitProgram(None, "Setting 'waitBeforeQuitting' is missing", None)
 
 	# Log
 	log("INFO", "Loading settings")
@@ -39,39 +40,39 @@ def getSettings(argv):
 	# Check that all the main entries are present and of the correct type
 	for key in ["polito", "telegram", "download", "coursesRenaming"]:
 		if not key in d:
-			quitProgram(None, "Some settings are missing", None)
+			quitProgram(None, f"Setting '{key}' is missing", None)
 		if not isinstance(d[key], dict):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting '{key}' is incorrect", None)
 
 	if not "courses" in d:
-		quitProgram(None, "Some settings are missing", None)
+		quitProgram(None, f"Setting 'courses' is missing", None)
 	if not isinstance(d["courses"], list):
-		quitProgram(None, "Some settings are invalid", None)
+		quitProgram(None, f"Setting 'courses' is incorrect", None)
 
 	if not "gui" in d:
-		quitProgram(None, "Some settings are missing", None)
+		quitProgram(None, f"Setting 'gui' is missing", None)
 	if not isinstance(d["gui"], bool):
-		quitProgram(None, "Some settings are invalid", None)
+		quitProgram(None, f"Setting 'gui' is incorrect", None)
 
 	# Check that all the entries for the "polito" key are present and of the correct type
 	for key in ["user", "password"]:
 		if not key in d["polito"]:
-			quitProgram(None, "Some settings are missing", None)
+			quitProgram(None, f"Setting 'polito/{key}' is missing", None)
 		if not isinstance(d["polito"][key], str):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'polito/{key}' is incorrect", None)
 
 	# Check that all the entries for the "telegram" key are present and of the correct type
 	if not "messageType" in d["telegram"]:
-		quitProgram(None, "Some settings are missing", None)
+		quitProgram(None, f"Setting 'telegram/messageType' is missing", None)
 	if d["telegram"]["messageType"] not in ["nothing", "error", "recap", "log"]:
-		quitProgram(None, "Some settings are invalid", None)
+		quitProgram(None, f"Setting 'telegram/messageType' is incorrect", None)
 
 	if d["telegram"]["messageType"] != "nothing":
 		for key in ["bot", "chatId"]:
 			if not key in d["telegram"]:
-				quitProgram(None, "Some settings are missing", None)
+				quitProgram(None, f"Setting 'telegram/{key}' is missing", None)
 			if not isinstance(d["telegram"][key], str):
-				quitProgram(None, "Some settings are invalid", None)
+				quitProgram(None, f"Setting 'telegram/{key}' is incorrect", None)
 	else:
 		d["telegram"]["bot"] = ""
 		d["telegram"]["chatId"] = ""
@@ -79,41 +80,52 @@ def getSettings(argv):
 	# Check that all the entries for the "download" key are of the correct type
 	for rule in d["coursesRenaming"]:
 		if not isinstance(rule, str) or not isinstance(d["coursesRenaming"][rule], str):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'coursesRenaming/{key}' is incorrect", None)
 
 	# Check that all the entries for the "download" key are present and of the correct type
 	for key in ["mainFolderPath", "ignoreFileName", "renamingFileName"]:
 		if key not in d["download"]:
-			quitProgram(None, "Some settings are missing", None)
+			quitProgram(None, f"Setting 'download/{key}' is missing", None)
 		if not isinstance(d["download"][key], str):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'download/{key}' is incorrect", None)
+
+	operatingSystem = platform.system()
+
+	if operatingSystem == "Windows":
+		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("/", "\\")
+	elif operatingSystem in ["Linux", "Darwin"]:
+		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("\\", "/")
+	else:
+		quitProgram(None, f"Your operating system ({operatingSystem}) is not recognised", None)
+
+	d["download"]["os"] = operatingSystem
 
 	for key in ["createEmptyIgnore", "createEmptyRenaming"]:
 		if key not in d["download"]:
-			quitProgram(None, "Some settings are missing", None)
+			quitProgram(None, f"Setting 'download/{key}' is missing", None)
 		if not isinstance(d["download"][key], bool):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'download/{key}' is incorrect", None)
 
 	if "waitTime" not in d["download"]:
-		quitProgram(None, "Some settings are missing", None)
-	if not isinstance(d["download"]["waitTime"], float):
-		quitProgram(None, "Some settings are invalid", None)
+		quitProgram(None, f"Setting 'download/waitTime' is missing", None)
+	if not isinstance(d["download"]["waitTime"], float) and not isinstance(d["download"]["waitTime"], int):
+		quitProgram(None, f"Setting 'download/waitTime' is incorrect", None)
 
 	if "invalidCharacters" not in d["download"]:
-		quitProgram(None, "Some settings are missing", None)
+		quitProgram(None, f"Setting 'download/invalidCharacters' is missing", None)
 	if not isinstance(d["download"]["invalidCharacters"], dict):
-		quitProgram(None, "Some settings are invalid", None)
+		quitProgram(None, f"Setting 'download/invalidCharacters' is incorrect", None)
 
 	for rule in d["download"]["invalidCharacters"]:
 		if not isinstance(d["download"]["invalidCharacters"][rule], str) or not isinstance(rule, str):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'download/invaildCharacters/{rule}' is incorrect", None)
 
 	# Check that the ignore and rename file names are yaml file names
 	for key in ["ignoreFileName", "renamingFileName"]:
 		if not d["download"][key].endswith(".yaml"):
-			quitProgram(None, "Some settings are invalid", None)
+			quitProgram(None, f"Setting 'download/{key}' is incorrect", None)
 
-	# Add the download temporary folder path and the politoit extension path
+	# Add the download temporary folder path and the polito.it extension path
 	d["download"]["tmpDownloadFolder"] = os.path.join(os.getcwd(), "tmpDownload")
 	d["polito"]["extensionPath"] = os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "politoit_utility.xpi")
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.6.0
+
+-   The program will recognize your operating system and use its correct folder separator character: you can now interchange `/` and `\\` (`\\\\` and `\\/` in regex)
+-   Having missing or incorrect settings will now tell you the setting that is wrong or missing, instead of just saying "There are missing/wrong settings"
+
 ## Version 1.5.1
 
 BUG FIXES:

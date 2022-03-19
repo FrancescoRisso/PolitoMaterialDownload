@@ -31,6 +31,6 @@ Error while working on `folder` | Some general error (not among the other cases)
 Invalid course folder name: `folder` | The folder you entered as main course folder is not an accepted folder name | Ignores the course | Change the course folder name by adding or changing a rule in the `coursesRenaming` setting
 Invalid ignore file formatting | The format of the ignore file is not correct | Ignores the course | Check that your ignore file is compliant with what explained [here](SETTINGS.md)
 Invalid renaming file formatting | The format of the renaming file is not correct | Ignores the course | Check that your renaming file is compliant with what explained [here](SETTINGS.md)
-Some settings are invalid | Some settings are of wrong data type (such as a boolean value inserted in quotes, as if it was a string) | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
-Some settings are missing | There are some missing settings | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
+Setting `setting` is incorrect | That setting is of wrong data type (such as a boolean value inserted in quotes, as if it was a string) | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
+Setting `setting` is missing | That setting is not present in your `settings.yaml` file | Quits | Check that your `settings.yaml` is compliant with what explained [here](SETTINGS.md)
 Your operating system (`OS`) is not is not recognised | Either some code problems occurred, or your operating system is not currently supported | Quits | Open a bug report

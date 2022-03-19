@@ -1,8 +1,10 @@
 from yaml import Loader, Dumper, load, dump
+import platform
 import os
 import re
 
 from log import log
+from quitProgram import quitProgram
 
 # 	importCourseConfig
 # 	---------------------------------------------------------------------
@@ -20,13 +22,14 @@ from log import log
 # 		- The renaming dictionary or the ignore list
 
 
-def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
-	# Init the empty renaming dict
+def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSystem):
+	# Init the empty renaming dicts (result is the original one, r is the one with updated slashes)
 	result = {"regex": [] if isIgnore else {}, "other": [] if isIgnore else {}}
+	r = {"regex": [] if isIgnore else {}, "other": [] if isIgnore else {}}
 
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
-		with open(os.path.join(path, fileName), "r") as f:
+		with open(os.path.join(path, fileName), "r", encoding="utf-8") as f:
 			result = load(f, Loader)
 
 			# Check correct formatting
@@ -69,4 +72,29 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore):
 			with open(os.path.join(path, fileName), "w") as f:
 				dump(result, f, Dumper, default_flow_style=False)
 
-	return result
+	if isIgnore:
+		if operatingSystem == "Windows":
+			for key in result["regex"]:
+				r["regex"].append(key.replace("\\/", "\\\\"))
+			for key in result["other"]:
+				r["other"].append(key.replace("/", "\\"))
+
+		elif operatingSystem in ["Linux", "Darwin"]:
+			for key in result["regex"]:
+				r["regex"].append(key.replace("\\\\", "\\/"))
+			for key in result["other"]:
+				r["other"].append(key.replace("\\", "/"))
+	else:
+		if operatingSystem == "Windows":
+			for key in result["regex"]:
+				r["regex"][key.replace("\\/", "\\\\")] = result["regex"][key].replace("\\/", "\\\\")
+			for key in result["other"]:
+				r["other"][key.replace("/", "\\")] = result["other"][key].replace("/", "\\")
+
+		elif operatingSystem in ["Linux", "Darwin"]:
+			for key in result["regex"]:
+				r["regex"][key.replace("\\\\", "\\/")] = result["regex"][key].replace("\\\\", "\\/")
+			for key in result["other"]:
+				r["other"][key.replace("\\", "/")] = result["other"][key].replace("\\", "/")
+
+	return r

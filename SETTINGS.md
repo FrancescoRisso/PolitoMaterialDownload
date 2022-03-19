@@ -14,7 +14,7 @@ Settings should be located in the same folder as the code, in a file called `set
 
 -   All the special characters must be escaped by a `\`. For instance, in order to have the characters `\`, `'` and `"` you should write respectively `\\`, `\'` and `\"`. This applies to any string in any configuration file.
 
--   In order to navigate folders, you must use the character chosen by your operating system. This means that you must use `/` in Linux and macOS, but `\` in Windows (remember to escape it!).
+-   In order to navigate folders, you can either use `\\` or `/`(`\\/` or `\\\\` in regex): the program will automatically check on which operating system it is running, and will use the correct separator for it. Currently supported operating systems are Windows, Linux and macOS: if you wish to use this program on another operating system, please contact me via bug report, I will ask you the necessary questions to support your operating system.
 
 Here there is a void template:
 
@@ -100,11 +100,11 @@ download:
       - "course2"
     ```
 
--   `coursesRenaming`: if you want some courses to have a folder name which is different from the course name in the Portale della didattica, write here the coupling oldName - newName. Here you can also manipulate the folder structure, as in the examples below (please use `\\` to navigate folders); paths must be relative from `mainFolderPath` (see below).<br>
+-   `coursesRenaming`: if you want some courses to have a folder name which is different from the course name in the Portale della didattica, write here the coupling oldName - newName. Here you can also manipulate the folder structure, as in the examples below (please use `\\` or `/` to navigate folders); paths must be relative from `mainFolderPath` (see below).<br>
     This can be written either like a python dictionary:
 
     ```
-    coursesRenaming: { "course1": "course1InFolder", "course2": "folder\\course2", "course3": "..\\course3" }
+    coursesRenaming: { "course1": "course1InFolder", "course2": "folder\\course2", "course3": "../course3" }
     ```
 
     or using the same formatting as the rest of the document (please indent at least one space more than `coursesRenaming`):
@@ -113,7 +113,7 @@ download:
     coursesRenaming:
       "course1": "course1InFolder"
       "course2": "folder\\course2"
-      "course3": "..\\course3"
+      "course3": "../course3"
     ```
 
     If you do not want any renaming, use `coursesRenaming: {}`.<br>
@@ -121,9 +121,9 @@ download:
 
 -   `download`: all the settings regarding the downloading of the materials.
     -   `mainFolderPath`: the absolute path to the root directory where you keep all the files from Polito. By default, material from each course will be saved in `<mainFolderPath>\<courseName>`, unless stated differently in `coursesRenaming`.
-    -   `waitTime`: a decimal number, that represents a time in seconds that the program will wait for some pages to be fully loaded.<br>
+    -   `waitTime`: a decimal number, that represents an arbitrary amount of time in seconds that the program will wait for some pages to be fully loaded.<br>
         Of course, the smaller this value is, the faster the program will be, but it should be high enough so that the page is correctly generated.<br>
-        A value that works for me is 0.4: I suggest to start from 0.2, and increase it until you do not get any `Could not find...` error.
+        A value that works for me is 0.4: I suggest to start from 0.2, and increase it until you do not get any `Could not find...` error, and no file is skipped.
     -   `createEmptyIgnore`: in case the "ignore" file is not present in a course folder, this setting tells whether to create a new, empty one in the course folder. More details about the usage of the "ignore" file will be presented below.<br>
         Possible values are `True`, `Yes` and `On` if you want the file to be created, `False`, `No`, `Off` if you do not want it (please do not use double quotes).
     -   `createEmptyRenaming`: in case the "renaming" file is not present in a course folder, this setting tells whether to create a new, empty one in the course folder. More details about the usage of the "renaming" file will be presented below.<br>
@@ -209,7 +209,7 @@ Please note that this renaming operation happens after checking that all charact
 
 Furthermore, the renamed file name is not checked for illegal characters: you should use only replacement strings that do not contain illegal characters.
 
-A possible usage of this feature is to change the folder tree: for example, you can set `"parentFolder" : "newFolder\\\\childFolder"`, so that every file in `parentFolder` in the Portale will result locally to be in a `childFolder` folder, which is nested into `newFolder`, which itself is located in the same location as where `parentFolder` would have been.
+A possible usage of this feature is to change the folder tree: for example, you can set `"parentFolder" : "newFolder/childFolder"` (normal string), so that every file in `parentFolder` in the Portale will result locally to be in a `childFolder` folder, which is nested into `newFolder`, which itself is located in the same location as where `parentFolder` would have been.
 
 Finally, be careful about escaping: in a regex, in order to match a `\` or a `/`, you have to use `\\` and `\/` respectively. Since you also have to escape the `\` character in the strings, you should have respectively `\\\\` and `\\/` in your regex (In a normal string `\\` and `/` are enough).
 
@@ -230,8 +230,7 @@ Finally, be careful about escaping: in a regex, in order to match a `\` or a `/`
     regex:
       "2021-10-[0-9][0-9]": "A day of october 2021"
     other:
-      "Course guide/": ""    # if on Linux or macOS
-    "Course guide\\": ""   # if on Windows
+      "Course guide/": ""
     ```
 
     For instance, this rules will transform as follows:
@@ -242,8 +241,7 @@ Finally, be careful about escaping: in a regex, in order to match a `\` or a `/`
 
 -   ```
     regex:
-      "Course guide\\/": ""    # if on Linux or macOS
-      "Course guide\\\\": ""   # if on Windows
+      "Course guide\\/": ""
     other: {}
     ```
     For instance, this rules will transform as follows:
@@ -284,15 +282,13 @@ A folder path can either end with the folder name, or can be followed by a slash
 ## Examples of ignoring files
 
 -   ```
-    regex: ["Exams\\/"]    # if on Linux or macOS
-    regex: ["Exams\\\\"]   # if on Windows
+    regex: ["Exams\\\\"]
     other: []
     ```
     This would ignore the folder `Exams` and all its content
 -   ```
     regex: []
-    other: ["Exams/"]    # if on Linux or macOS
-    other: ["Exams\\"]   # if on Windows
+    other: ["Exams\\"]
     ```
     This would ignore the folder `Exams` and all its content
 -   ```
@@ -311,10 +307,8 @@ A folder path can either end with the folder name, or can be followed by a slash
 
 -   ```
     regex:
-      - "Course guide\\/"                   # if on Linux or macOS
-      - "Extra material\\/[\\s\\S]*.pdf"    # if on Linux or macOS
-      - "Course guide\\\\"                  # if on Windows
-      - "Extra material\\\\[\\s\\S]*.pdf"   # if on Windows
-    other: []
+      - "Extra material\\/[\\s\\S]*.pdf"
+      - "Course guide\\\\"
+	  
     ```
     This wolud ignore the folder `Course guide` and all its content, plus all the pdfs directly nested into the folder `Extra material`
