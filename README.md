@@ -30,6 +30,12 @@ I have developed and "lab-tested" this tool, but as now (february 2022) I havent
 
 This might mean that there are still strange problems not picked up by the lab-testing, if you find some please report them. I will be using this tool for the next semester and will be fixing any bug that I find.
 
+## Updating
+
+I will be using this tool, so I might find and fix new bugs, or I might add new useful features. Every update will be published here, and the changes will be tracked in the file [CHANGELOG.md](CHANGELOG.md).
+
+When updating to a new version, please give a look to the changelog's versions from the one you are updating from to the current version: you might need to add/modify some settings. If you have to change something, it will be marked as `NOTE` in the changelog.
+
 ## How to install
 
 -   Download all the code to your machine (either with `git clone` or by downloading the zip folder, then exctracting).

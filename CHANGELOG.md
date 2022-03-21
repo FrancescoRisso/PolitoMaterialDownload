@@ -1,11 +1,28 @@
 # Changelog
 
+## Version 1.7.0
+
+NOTE: You have to add the setting `deleteReplaced` (also `moveDest`, if needed) to your `download` section of the setting file
+
+MAIN UPDATES:
+
+-   Added explanation about things that might have to be done when updating
+-   Added possibility to avoid that downloading an updated file will delete the outdated one
+
+BUG FIXES:
+
+-   Removed a debug instruction that totally broke the program
+
 ## Version 1.6.0
+
+MAIN UPDATES:
 
 -   The program will recognize your operating system and use its correct folder separator character: you can now interchange `/` and `\\` (`\\\\` and `\\/` in regex)
 -   Having missing or incorrect settings will now tell you the setting that is wrong or missing, instead of just saying "There are missing/wrong settings"
 
 ## Version 1.5.1
+
+MAIN UPDATES:
 
 BUG FIXES:
 
@@ -14,7 +31,9 @@ BUG FIXES:
 
 ## Version 1.5.0
 
-NOTE: You have to change your "Ignore" file due to changes in its format
+MAIN UPDATES:
+
+NOTE: You have to change your "Ignore" file structure due to changes in its format
 
 -   Fixed wrong logic from last commit
 -   Changed "ignore" file format, to avoid confusing behavior
@@ -26,10 +45,14 @@ BUG FIXES:
 
 ## Version 1.4.0
 
+MAIN UPDATES:
+
 -   Improved the "ignore file" algorithm
 -   `settings.py` renamed to `importSettings.py`
 
 ## Version 1.3.3
+
+MAIN UPDATES:
 
 BUG FIXES:
 
@@ -37,11 +60,15 @@ BUG FIXES:
 
 ## Version 1.3.2
 
+MAIN UPDATES:
+
 BUG FIXES:
 
 -   If the course had past years' recordings, the program would enter an infinite loop, fixed
 
 ## Version 1.3.1
+
+MAIN UPDATES:
 
 BUG FIXES:
 
@@ -50,14 +77,20 @@ BUG FIXES:
 
 ## Version 1.3.0
 
+MAIN UPDATES:
+
 -   Added documentation about how to automate the program on Linux (how I did it)
 
 ## Version 1.2.0
+
+MAIN UPDATES:
 
 -   Added the possibility to give the program the code location, useful in case the program is executed from a folder which is not the same as the code
 -   Setting `extensionPath` is not required anymore
 
 ## Version 1.1.0
+
+MAIN UPDATES:
 
 -   The config file was originally a json, but is now a yaml because it seems to me more user-friendly
 -   Added a sample-settings file
@@ -75,5 +108,7 @@ BUG FIXES:
 -   Downloaded files report does not appear anymore in the telegram message if the setting is "error"
 
 ## Version 1.0.0
+
+MAIN UPDATES:
 
 -   First version of the code, uploaded to download it on my server to try it there

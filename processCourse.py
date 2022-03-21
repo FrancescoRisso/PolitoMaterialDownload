@@ -30,7 +30,7 @@ def processCourse(nameFolder, settings, portale):
 	downloaded = []
 
 	# If course folder does not exist, create it
-	try:	
+	try:
 		if not os.path.exists(path):
 			os.makedirs(path)
 	except Exception:
@@ -38,7 +38,9 @@ def processCourse(nameFolder, settings, portale):
 		return downloaded
 
 	# Import the renaming dictionary and check if it is correct
-	renaming = importCourseConfig(path, settings["createEmptyRenaming"], settings["renamingFileName"], False, settings["os"])
+	renaming = importCourseConfig(
+		path, settings["createEmptyRenaming"], settings["renamingFileName"], False, settings["os"]
+	)
 	if renaming == None:
 		log("ERR", "Invalid renaming file formatting")
 		return downloaded
@@ -48,8 +50,6 @@ def processCourse(nameFolder, settings, portale):
 	if ignore == None:
 		log("ERR", "Invalid ignore file formatting")
 		return downloaded
-
-	return downloaded
 
 	# In the course page, select the tab "Materiale"
 	xpath = "//a[@class='policorpolink'][normalize-space()='Materiale']"

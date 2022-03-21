@@ -24,8 +24,8 @@ from quitProgram import quitProgram
 
 def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSystem):
 	# Init the empty renaming dicts (result is the original one, r is the one with updated slashes)
-	result = {"regex": [] if isIgnore else {}, "other": [] if isIgnore else {}}
-	r = {"regex": [] if isIgnore else {}, "other": [] if isIgnore else {}}
+	result = {"regex": {}, "other": {}}
+	r = {"regex": {}, "other": {}}
 
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
@@ -72,29 +72,17 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSyst
 			with open(os.path.join(path, fileName), "w") as f:
 				dump(result, f, Dumper, default_flow_style=False)
 
-	if isIgnore:
-		if operatingSystem == "Windows":
-			for key in result["regex"]:
-				r["regex"].append(key.replace("\\/", "\\\\"))
-			for key in result["other"]:
-				r["other"].append(key.replace("/", "\\"))
 
-		elif operatingSystem in ["Linux", "Darwin"]:
-			for key in result["regex"]:
-				r["regex"].append(key.replace("\\\\", "\\/"))
-			for key in result["other"]:
-				r["other"].append(key.replace("\\", "/"))
-	else:
-		if operatingSystem == "Windows":
-			for key in result["regex"]:
-				r["regex"][key.replace("\\/", "\\\\")] = result["regex"][key].replace("\\/", "\\\\")
-			for key in result["other"]:
-				r["other"][key.replace("/", "\\")] = result["other"][key].replace("/", "\\")
+	if operatingSystem == "Windows":
+		for key in result["regex"]:
+			r["regex"][key.replace("\\/", "\\\\")] = "" if isIgnore else result["regex"][key].replace("\\/", "\\\\")
+		for key in result["other"]:
+			r["other"][key.replace("/", "\\")] = "" if isIgnore else result["other"][key].replace("/", "\\")
 
-		elif operatingSystem in ["Linux", "Darwin"]:
-			for key in result["regex"]:
-				r["regex"][key.replace("\\\\", "\\/")] = result["regex"][key].replace("\\\\", "\\/")
-			for key in result["other"]:
-				r["other"][key.replace("\\", "/")] = result["other"][key].replace("\\", "/")
+	elif operatingSystem in ["Linux", "Darwin"]:
+		for key in result["regex"]:
+			r["regex"][key.replace("\\\\", "\\/")] = "" if isIgnore else result["regex"][key].replace("\\\\", "\\/")
+		for key in result["other"]:
+			r["other"][key.replace("\\", "/")] = "" if isIgnore else result["other"][key].replace("\\", "/")
 
 	return r

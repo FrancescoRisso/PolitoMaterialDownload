@@ -1,3 +1,4 @@
+from importlib.resources import path
 from selenium.webdriver.common.by import By
 from datetime import datetime
 import time
@@ -126,9 +127,33 @@ def checkAndDownloadFile(
 			# If download is complete, move it to the correct location, then stop checking
 			if not finalFileName.endswith(".part"):
 
-				# If there is an outdated file, remove it
+				# If there is an outdated file
 				if os.path.exists(completeFilePath):
-					os.remove(completeFilePath)
+
+					# If the user wants it to be deleted, delete it
+					if settings["deleteReplaced"]:
+						os.remove(completeFilePath)
+
+					# If the user wants it to be moved, move it
+					else:
+						# Create folder if not present
+						if not os.path.exists(settings["moveDest"]):
+							os.mkdir(settings["moveDest"])
+
+						os.rename(
+							completeFilePath, os.path.join(settings["moveDest"], f"{time.time()} {os.path.basename(completeFilePath)}")
+						)
+						# Wait until file has been moved
+						for i in range(1200):
+							if os.path.basename(completeFilePath) not in os.listdir(settings["moveDest"]):
+								break
+							time.sleep(0.05)
+						else:
+							os.remove(finalFileName)
+							log("ERR", f"Could not move '{os.path.basename(completeFilePath)}' to the 'moveDest' folder. Skipping it")
+							return
+
+
 					log("SAVE", f"Replacing '{os.path.basename(completeFilePath)}'")
 					downloaded.append(f"{os.path.basename(completeFilePath)} (replaced)")
 				else:

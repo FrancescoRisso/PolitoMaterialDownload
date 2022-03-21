@@ -21,6 +21,7 @@ download:
     createEmptyRenaming: No
     ignoreFileName: "Ignore.yaml"
     renamingFileName: "Renaming.yaml"
+    deleteReplaced: Yes
     invalidCharacters:
         "/": "-"
         ":": "."

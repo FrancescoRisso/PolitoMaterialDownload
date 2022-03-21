@@ -44,6 +44,8 @@ download:
   createEmptyRenaming:
   ignoreFileName:
   renamingFileName:
+  deleteReplaced:
+  moveDest:
   invalidCharacters:
     "/":
     ":":
@@ -130,6 +132,9 @@ download:
         Possible values are `True`, `Yes` and `On` if you want the file to be created, `False`, `No`, `Off` if you do not want it (please do not use double quotes).
     -   `ignoreFileName`: the name of the file where you store the config for the files to be ignored (see below). This file must have the `.yaml` extension.
     -   `renamingFileName`: the name of the file where you store the config for the files to be ignored (see below). This file must have the `.yaml` extension.
+    -   `deleteReplaced`: in case a file gets updated, it is downloaded again. This setting tells if the old file should be overwritten or not (in that case it is moved to the folder `moveDest`, see below). <br>
+        Possible values are `True`, `Yes` and `On` if you want the old file to be overwritten, `False`, `No`, `Off` if you want it to be moved (please do not use double quotes).
+    -   `moveDest`: the full path to a folder where to move the outdated files. A number is added at the beginning of the file name to avoid duplicate files.
     -   `invalidCharacters`: determines how the program should replace the characters that cannot be part of a file name. You should insert what each one gets replaced with (can also be an empty string, `""`).<br>
         Characters already present in the void file above are all the ones considered invalid by Windows, which is the most stringent operating system. If you are running on another operating system where some of these characters are allowed, you can remove them from the list.
 
@@ -164,6 +169,8 @@ download:
   createEmptyRenaming: Yes
   ignoreFileName: "Ignore.yaml"
   renamingFileName: "Renaming.yaml"
+  deleteReplaced: No
+  moveDest: "C:\\Users\\user\\Polito\\Corsi\\ReplacedFiles"
   invalidCharacters:
     "/": "-"
     ":": "."
@@ -309,6 +316,7 @@ A folder path can either end with the folder name, or can be followed by a slash
     regex:
       - "Extra material\\/[\\s\\S]*.pdf"
       - "Course guide\\\\"
-	  
+
     ```
+
     This wolud ignore the folder `Course guide` and all its content, plus all the pdfs directly nested into the folder `Extra material`

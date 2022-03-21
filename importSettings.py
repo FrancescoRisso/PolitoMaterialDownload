@@ -37,6 +37,9 @@ def getSettings(argv):
 	# Log
 	log("INFO", "Loading settings")
 
+	# Get info about the operating system
+	operatingSystem = platform.system()
+
 	# Check that all the main entries are present and of the correct type
 	for key in ["polito", "telegram", "download", "coursesRenaming"]:
 		if not key in d:
@@ -77,7 +80,7 @@ def getSettings(argv):
 		d["telegram"]["bot"] = ""
 		d["telegram"]["chatId"] = ""
 
-	# Check that all the entries for the "download" key are of the correct type
+	# Check that all the entries for the "coursesRenaming" key are of the correct type
 	for rule in d["coursesRenaming"]:
 		if not isinstance(rule, str) or not isinstance(d["coursesRenaming"][rule], str):
 			quitProgram(None, f"Setting 'coursesRenaming/{key}' is incorrect", None)
@@ -89,18 +92,7 @@ def getSettings(argv):
 		if not isinstance(d["download"][key], str):
 			quitProgram(None, f"Setting 'download/{key}' is incorrect", None)
 
-	operatingSystem = platform.system()
-
-	if operatingSystem == "Windows":
-		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("/", "\\")
-	elif operatingSystem in ["Linux", "Darwin"]:
-		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("\\", "/")
-	else:
-		quitProgram(None, f"Your operating system ({operatingSystem}) is not recognised", None)
-
-	d["download"]["os"] = operatingSystem
-
-	for key in ["createEmptyIgnore", "createEmptyRenaming"]:
+	for key in ["createEmptyIgnore", "createEmptyRenaming", "deleteReplaced"]:
 		if key not in d["download"]:
 			quitProgram(None, f"Setting 'download/{key}' is missing", None)
 		if not isinstance(d["download"][key], bool):
@@ -119,6 +111,26 @@ def getSettings(argv):
 	for rule in d["download"]["invalidCharacters"]:
 		if not isinstance(d["download"]["invalidCharacters"][rule], str) or not isinstance(rule, str):
 			quitProgram(None, f"Setting 'download/invaildCharacters/{rule}' is incorrect", None)
+
+	# if not deleteReplaced, check that the moveDest is present and of the correct type
+	if not d["download"]["deleteReplaced"]:
+		if not "moveDest" in d["download"]:
+			quitProgram(None, f"Setting 'download/moveDest' is missing", None)
+		if not isinstance(d["download"]["moveDest"], str):
+			quitProgram(None, f"Setting 'download/moveDest' is incorrect", None)
+	else:
+		d["download"]["moveDest"] = ""
+
+	if operatingSystem == "Windows":
+		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("/", "\\")
+		d["download"]["moveDest"] = d["download"]["moveDest"].replace("/", "\\")
+	elif operatingSystem in ["Linux", "Darwin"]:
+		d["download"]["mainFolderPath"] = d["download"]["mainFolderPath"].replace("\\", "/")
+		d["download"]["moveDest"] = d["download"]["moveDest"].replace("\\", "/")
+	else:
+		quitProgram(None, f"Your operating system ({operatingSystem}) is not recognised", None)
+
+	d["download"]["os"] = operatingSystem
 
 	# Check that the ignore and rename file names are yaml file names
 	for key in ["ignoreFileName", "renamingFileName"]:
