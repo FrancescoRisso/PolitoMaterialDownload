@@ -52,10 +52,11 @@ def getSettings(argv):
 	if not isinstance(d["courses"], list):
 		quitProgram(None, f"Setting 'courses' is incorrect", None)
 
-	if not "gui" in d:
-		quitProgram(None, f"Setting 'gui' is missing", None)
-	if not isinstance(d["gui"], bool):
-		quitProgram(None, f"Setting 'gui' is incorrect", None)
+	for key in ["gui", "warnNewVersion"]:
+		if not key in d:
+			quitProgram(None, f"Setting '{key}' is missing", None)
+		if not isinstance(d["gui"], bool):
+			quitProgram(None, f"Setting '{key}' is incorrect", None)
 
 	# Check that all the entries for the "polito" key are present and of the correct type
 	for key in ["user", "password"]:

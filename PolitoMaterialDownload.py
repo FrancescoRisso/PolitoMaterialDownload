@@ -4,6 +4,7 @@ import sys
 import os
 
 from telegram import initTelegram, telegramLog
+from checkNewVersion import checkNewVersion
 from log import LOGchangeTelegramConn, log
 from findInPortale import findInPortale
 from processCourse import processCourse
@@ -18,6 +19,9 @@ def main():
 
 	# Load the settings
 	settings = getSettings(sys.argv)
+
+	if settings["warnNewVersion"]:
+		checkNewVersion()
 
 	# Reset the tmpDownload folder
 	if os.path.exists(settings["download"]["tmpDownloadFolder"]):

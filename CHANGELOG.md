@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 1.8.0
+
+NOTE: You have to add the setting `warnNewVersion` to your `download` section of the setting file
+
+MAIN UPDATES:
+
+-   If you want, the program can warn you if there is a new version available
+
+BUG FIXES:
+
+-   Formatting error in the changelog
+
 ## Version 1.7.0
 
 NOTE: You have to add the setting `deleteReplaced` (also `moveDest`, if needed) to your `download` section of the setting file
@@ -31,9 +43,9 @@ BUG FIXES:
 
 ## Version 1.5.0
 
-MAIN UPDATES:
-
 NOTE: You have to change your "Ignore" file structure due to changes in its format
+
+MAIN UPDATES:
 
 -   Fixed wrong logic from last commit
 -   Changed "ignore" file format, to avoid confusing behavior

@@ -24,6 +24,8 @@ gui:
 
 waitBeforeQuitting:
 
+warnNewVersion: 
+
 polito:
   user:
   password:
@@ -66,6 +68,10 @@ download:
     I suggest using it if you are running the program manually with an automatically-closing terminal (such as in windows the `right-click > open with > python`), while I recommend to remove the wait if you are running the program on schedule, because it might cause problems.<br>
     This setting is assumed True before being loaded. This means that, in case the program cannot open or parse the settings file, or in case this setting is not present or invalid, the program will always ask you to hit enter before exiting.<br>
     Possible values are `True`, `Yes` and `On` if you want the program to wait for an input before quitting, `False`, `No`, `Off` if you do not want it.
+
+-   `warnNewVersion`: defines whether the program should check if you are using the latest version. <br>
+    Possible values are `True`, `Yes` and `On` if you want the version to be checked, `False`, `No`, `Off` if you do not want it (please do not use double quotes).<br>
+	If set to a true value, the program will log an `INFO` if you version is the latest available, or an `ERR` if there is an updated one.
 
 -   `polito`: all the settings regarding your polito account.
 
@@ -145,6 +151,8 @@ download:
 gui: No
 
 waitBeforeQuitting: No
+
+warnNewVersion: Yes
 
 polito:
   user: "s123456@studenti.polito.it"

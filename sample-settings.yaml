@@ -3,6 +3,8 @@ gui: No
 
 waitBeforeQuitting: Yes
 
+warnNewVersion: Yes
+
 polito:
     user: "s123456@studenti.polito.it"
     password: "mySuperDuperPassword"
