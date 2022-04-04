@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.8.1
+
+BUG FIXES:
+
+-   Included a file that was missing in the previous commit
+
 ## Version 1.8.0
 
 NOTE: You have to add the setting `warnNewVersion` to your `download` section of the setting file
