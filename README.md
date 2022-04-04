@@ -36,6 +36,8 @@ I will be using this tool, so I might find and fix new bugs, or I might add new 
 
 When updating to a new version, please give a look to the changelog's versions from the one you are updating from to the current version: you might need to add/modify some settings. If you have to change something, it will be marked as `NOTE` in the changelog.
 
+You can also have the program check for you if there are available updates, see [SETTINGS.md](SETTINGS.md) for details.
+
 ## How to install
 
 -   Download all the code to your machine (either with `git clone` or by downloading the zip folder, then exctracting).

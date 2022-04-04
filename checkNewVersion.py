@@ -1,12 +1,13 @@
 from urllib.request import urlopen
+import os
 
 from log import log
 
 
-def checkNewVersion():
+def checkNewVersion(argv):
 	# Retreive current version from CHANGELOG.md file
 	try:
-		f = open("CHANGELOG.md", "r")
+		f = open(os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "CHANGELOG.md"), "r")
 	except:
 		log("ERR", "Could not open CHANGELOG.md to verify version")
 		return

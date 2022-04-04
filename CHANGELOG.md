@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.8.2
+
+BUG FIXES:
+
+-   CHANGELOG.md could not be opened to check the version if the program was not run from the folder's directory
+-   Specified in README.md that automatic update check is now available
+
 ## Version 1.8.1
 
 BUG FIXES:

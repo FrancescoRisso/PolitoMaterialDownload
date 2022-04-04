@@ -21,7 +21,7 @@ def main():
 	settings = getSettings(sys.argv)
 
 	if settings["warnNewVersion"]:
-		checkNewVersion()
+		checkNewVersion(sys.argv)
 
 	# Reset the tmpDownload folder
 	if os.path.exists(settings["download"]["tmpDownloadFolder"]):
