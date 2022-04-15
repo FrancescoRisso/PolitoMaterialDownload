@@ -1,4 +1,3 @@
-from importlib.resources import path
 from selenium.webdriver.common.by import By
 from datetime import datetime
 import time
@@ -153,7 +152,6 @@ def checkAndDownloadFile(
 							log("ERR", f"Could not move '{os.path.basename(completeFilePath)}' to the 'moveDest' folder. Skipping it")
 							return
 
-
 					log("SAVE", f"Replacing '{os.path.basename(completeFilePath)}'")
 					downloaded.append(f"{os.path.basename(completeFilePath)} (replaced)")
 				else:
@@ -172,6 +170,13 @@ def checkAndDownloadFile(
 					log("ERR", f"Could not move '{os.path.basename(completeFilePath)}' to the correct folder. Deleting it")
 					for file in os.listdir(settings["tmpDownloadFolder"]):
 						os.remove(os.path.join(settings["tmpDownloadFolder"], file))
+					
+					# Remove non-moved file if exists (can be a 0-bytes file)
+					if os.path.exists(completeFilePath):
+						os.remove(completeFilePath)
+
+					# Remove file from downloaded list
+					downloaded.pop()
 
 				break
 

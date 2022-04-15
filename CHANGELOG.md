@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.9.0
+
+MAIN UPDATES:
+
+-   If the program fails to move a file to a folder, it will now delete the eventual leftovers from the failed move (such as a 0-bytes file). This allows the software to try to download the file again the next time it is executed (otherwise it would skip the file, since name and date are ok, and the program does not check the file size)
+
+BUG FIXES:
+
+-   Removed some useless library imports in some files
+
 ## Version 1.8.2
 
 BUG FIXES:

@@ -1,10 +1,8 @@
 from yaml import Loader, Dumper, load, dump
-import platform
 import os
 import re
 
 from log import log
-from quitProgram import quitProgram
 
 # 	importCourseConfig
 # 	---------------------------------------------------------------------
