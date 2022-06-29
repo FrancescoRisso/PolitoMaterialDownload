@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.9.1
+
+BUG FIXES:
+
+-   The website structure slightly changed, now the program works again (and it's more reliable)
+
 ## Version 1.9.0
 
 MAIN UPDATES:

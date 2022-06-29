@@ -54,9 +54,10 @@ def main():
 	downloadedMaterial = {}
 
 	# Get the list of courses in the Portale
-	coursesPortale = findInPortale(portale, "(//tbody)[3]//tr//td//a", True, False)
+	coursesXpath = '//div[contains(text(), "Carico Didattico A.A. 2021/22")]/../..//tbody//tr//td//a'
+	coursesPortale = findInPortale(portale, coursesXpath, True, False)
 	time.sleep(settings["download"]["waitTime"])
-	coursesPortale = findInPortale(portale, "(//tbody)[3]//tr//td//a", True, False)
+	coursesPortale = findInPortale(portale, coursesXpath, True, False)
 
 	if coursesPortale == None:
 		quitProgram(portale, "Could not load courses from the Portale", settings["download"]["tmpDownloadFolder"])
