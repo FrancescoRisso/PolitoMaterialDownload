@@ -21,9 +21,12 @@ from log import log
 
 def getSettings(argv):
 
-	# Load settings
-	with open(os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "settings.yaml"), "r") as f:
-		d = load(f, Loader)
+	try:
+		# Load settings
+		with open(os.path.join(argv[1] if len(argv) > 1 else os.getcwd(), "settings.yaml"), "r") as f:
+			d = load(f, Loader)
+	except Exception:
+		quitProgram(None, "Unable to open the settings configuration", None)
 
 	# Check if waitBeforeQuitting is ok, and if so update the quitter
 	if "waitBeforeQuitting" in d:

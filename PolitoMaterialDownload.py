@@ -54,7 +54,7 @@ def main():
 	downloadedMaterial = {}
 
 	# Get the list of courses in the Portale
-	coursesXpath = '//div[contains(text(), "Carico Didattico A.A. 2021/22")]/../..//tbody//tr//td//a'
+	coursesXpath = '//div[contains(text(), "Carico Didattico A.A.")]/../..//tbody//tr//td//a'
 	coursesPortale = findInPortale(portale, coursesXpath, True, False)
 	time.sleep(settings["download"]["waitTime"])
 	coursesPortale = findInPortale(portale, coursesXpath, True, False)

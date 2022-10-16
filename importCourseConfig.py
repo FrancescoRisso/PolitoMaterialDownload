@@ -22,8 +22,8 @@ from log import log
 
 def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSystem):
 	# Init the empty renaming dicts (result is the original one, r is the one with updated slashes)
-	result = {"regex": {}, "other": {}}
-	r = {"regex": {}, "other": {}}
+	result = {"regex": [], "other": []} if isIgnore else {"regex": {}, "other": {}}
+	r = {"regex": [], "other": []} if isIgnore else {"regex": {}, "other": {}}
 
 	# If the file exists, open it and load it
 	if os.path.exists(os.path.join(path, fileName)):
@@ -45,10 +45,12 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSyst
 				for rule in result["regex"]:
 					d[rule] = ""
 				result["regex"] = d
+				r["regex"] = d
 				d = {}
 				for rule in result["other"]:
 					d[rule] = ""
 				result["other"] = d
+				r["other"] = d
 
 			# Delete any invalid regex expression
 			deleteRegex = []
@@ -69,7 +71,6 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSyst
 		if createIfNotThere:
 			with open(os.path.join(path, fileName), "w") as f:
 				dump(result, f, Dumper, default_flow_style=False)
-
 
 	if operatingSystem == "Windows":
 		for key in result["regex"]:

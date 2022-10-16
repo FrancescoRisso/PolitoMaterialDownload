@@ -30,7 +30,7 @@ def log(type, message):
 		tmpLog.append((mess, type))
 
 	# Log the message with its time to console
-	print(f"{time.strftime('%Y-%m-%d %H:%M:%S').format()} {mess}")
+	print(f"{time.strftime('%Y-%m-%d %H:%M:%S').format()} {mess}", flush=True)
 
 
 # 	changeTelegramConn
