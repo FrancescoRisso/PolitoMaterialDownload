@@ -93,6 +93,10 @@ def authenticate(settings, tmpFolderPath, gui):
 			# Login not needed
 			log("INFO", "Login not required")
 
+		# Wait until page has loaded
+		if findInPortale(portale, "//div[@id='titoloPagina'] | //div[@id='table_portali']", False, True) == None:
+			quitProgram(portale, "Error while authenticating to the Portale", tmpFolderPath)
+
 		if "Servizi disponibili" in portale.title:
 			portaleDellaDidatticaButton = findInPortale(portale, "//div[@id='table_portali']/div/div[normalize-space()='Portale della Didattica']/a", False, False)
 			portaleDellaDidatticaButton.click()
@@ -100,7 +104,7 @@ def authenticate(settings, tmpFolderPath, gui):
 	except Exception:
 		quitProgram(portale, "Could not login", tmpFolderPath)
 
-	# Wait until page has loaded (there is the title "Servizi per la didattica")
+	# Wait until page has loaded
 	if findInPortale(portale, "//div[@id='titoloPagina']", False, True) == None:
 		quitProgram(portale, "Error while authenticating to the Portale", tmpFolderPath)
 

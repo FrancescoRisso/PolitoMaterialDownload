@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.9.4
+
+BUG FIXES:
+
+-	Script could not terminate the login phase
+
 ## Version 1.9.3
 
 BUG FIXES:
