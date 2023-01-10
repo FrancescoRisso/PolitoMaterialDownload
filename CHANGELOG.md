@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.9.3
+
+BUG FIXES:
+
+-	Fixed the login not working anymore due to the recent website restyling
+
 ## Version 1.9.2
 
 BUG FIXES:

@@ -62,7 +62,7 @@ def authenticate(settings, tmpFolderPath, gui):
 
 	try:
 		# Click login button
-		login = findInPortale(portale, "//a[normalize-space()='Login']", False, False)
+		login = findInPortale(portale, "//a[normalize-space()='Login'][1]", False, False)
 		if login == None:
 			quitProgram(portale, "Could not find login button", tmpFolderPath)
 		else:
@@ -92,6 +92,11 @@ def authenticate(settings, tmpFolderPath, gui):
 		else:
 			# Login not needed
 			log("INFO", "Login not required")
+
+		if "Servizi disponibili" in portale.title:
+			portaleDellaDidatticaButton = findInPortale(portale, "//div[@id='table_portali']/div/div[normalize-space()='Portale della Didattica']/a", False, False)
+			portaleDellaDidatticaButton.click()
+
 	except Exception:
 		quitProgram(portale, "Could not login", tmpFolderPath)
 
