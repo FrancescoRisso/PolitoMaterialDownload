@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.10.0
+
+MAIN UPDATES:
+
+-   Added support for non-ASCII characters in the settings files
+
+BUG FIXES:
+
+-	Program was crashing after exploring a folder
+
 ## Version 1.9.4
 
 BUG FIXES:
