@@ -54,6 +54,10 @@ You can also have the program check for you if there are available updates, see 
 
 -   Run the program by launching the file `PolitoMaterialDownload.py`.
 
+NOTE #1: the current working directory when the python file is executed must be the directory where the python files are. In case it is not, you can call the python file with an extra parameter, containing the full path to the folder, like this: `python3 PolitoMaterialDownload.py "/path/to/PolitoMaterialDownload/"`
+
+NOTE #2: On Windows (it may also happen on other OSs, but it was not tested), opening a python file with double-click will use `system32` as working directory. If you want to open the file with double-click, you will therefore have to create a script that runs the command from NOTE #1, and then double-click that file instead of the python one.
+
 ## Automating it
 
 I have an Ubuntu always on server, and I save my Polito files on a Dropbox folder. For these reasons, I could use that server to automate the execution of this program, and get the files uploaded directly to my Dropbox (thus, finding them on my PC).
@@ -111,6 +115,10 @@ My service config is:
 	- `/var/log/downloader/log.log` with the path to the file where you want your main log to be stored.
 	- `/var/log/downloader/error.log` with the path to the file where you want your error log to be stored (can also be the same as above).<br>
 		Please note that all "ERR" logs would still be sent to the first file: this is only in case the program crashes in a very strange way.
+
+## Container
+
+I recently moved my files from Dropbox to OneDrive, and with that I was able to create a container deployment to avoid the virtual machine: you can find more information about this in the [docker/README.md](./docker/README.md) file.
 
 ## Ignoring or renaming files or folders
 

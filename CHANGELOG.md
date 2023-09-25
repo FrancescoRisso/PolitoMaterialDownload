@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.10.1
+
+BUG FIXES:
+
+-	Added notes to the readme about the required working directory
+
 ## Version 1.10.0
 
 MAIN UPDATES:
