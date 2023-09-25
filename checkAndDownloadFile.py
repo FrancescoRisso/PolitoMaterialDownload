@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from datetime import datetime
 import time
 import os
+import shutil
 
 from restartFolder import RestartFolder
 from findInPortale import findInPortale
@@ -139,7 +140,7 @@ def checkAndDownloadFile(
 						if not os.path.exists(settings["moveDest"]):
 							os.mkdir(settings["moveDest"])
 
-						os.rename(
+						shutil.move(
 							completeFilePath, os.path.join(settings["moveDest"], f"{time.time()} {os.path.basename(completeFilePath)}")
 						)
 						# Wait until file has been moved
@@ -159,7 +160,7 @@ def checkAndDownloadFile(
 					downloaded.append(os.path.basename(completeFilePath))
 
 				# Move the downloaded file to the correct location (and rename it)
-				os.rename(finalFileName, completeFilePath)
+				shutil.move(finalFileName, completeFilePath)
 
 				# Wait until the folder is totally empty
 				for i in range(1200):

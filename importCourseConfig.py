@@ -68,7 +68,7 @@ def importCourseConfig(path, createIfNotThere, fileName, isIgnore, operatingSyst
 		# If file did not exist, create an empty one if the user requested it
 		if createIfNotThere:
 			with open(os.path.join(path, fileName), "w") as f:
-				dump(result, f, Dumper, default_flow_style=False)
+				dump({"regex": [], "other": []} if isIgnore else {"regex": {}, "other": {}}, f, Dumper, default_flow_style=False)
 
 	if operatingSystem == "Windows":
 		for key in result["regex"]:
