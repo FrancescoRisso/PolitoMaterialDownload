@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: onedrive-link-printer
+    labels:
+        name: onedrive-link-printer
+spec:
+    containers:
+        - name: onedrive-link-printer
+          image: francescorisso/custom-onedrive:latest
+          resources:
+              limits:
+                  memory: "1Gi"
+                  cpu: "500m"
+          volumeMounts:
+              - mountPath: /onedrive/conf
+                name: conf
+          env:
+              - name: ONEDRIVE_UID
+                value: "1000"
+              - name: ONEDRIVE_GID
+                value: "1000"
+              - name: ONEDRIVE_RESYNC
+                value: "1"
+    volumes:
+        - name: conf
+          persistentVolumeClaim:
+              claimName: onedrive-settings
+    restartPolicy: Never

@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+    name: polito-material-download
+spec:
+    schedule: "0 7-21 * * *"
+    jobTemplate:
+        spec:
+            backoffLimit: 3
+            template:
+                spec:
+                    restartPolicy: OnFailure
+                    containers:
+                        - name: polito-material-download
+                          image: francescorisso/polito-material-downloader:latest
+                          resources:
+                              limits:
+                                  memory: "500Mi"
+                                  cpu: "500m"
+                          volumeMounts:
+                              - mountPath: /PolitoMaterialDownload/data
+                                name: data
+                              - mountPath: /PolitoMaterialDownload/settings
+                                name: conf
+                    volumes:
+                        - name: data
+                          persistentVolumeClaim:
+                              claimName: onedrive-data
+                        - name: conf
+                          persistentVolumeClaim:
+                              claimName: pmd-settings

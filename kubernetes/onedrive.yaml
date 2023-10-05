@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: onedrive
+spec:
+    selector:
+        matchLabels:
+            app: onedrive
+    template:
+        metadata:
+            labels:
+                app: onedrive
+        spec:
+            containers:
+                - name: onedrive
+                  image: francescorisso/custom-onedrive:latest
+                  resources:
+                      limits:
+                          memory: "1Gi"
+                          cpu: "500m"
+                  volumeMounts:
+                      - mountPath: /onedrive/data
+                        name: data
+                      - mountPath: /onedrive/conf
+                        name: conf
+                  env:
+                      - name: ONEDRIVE_UID
+                        value: "1000"
+                      - name: ONEDRIVE_GID
+                        value: "1000"
+                      - name: ONEDRIVE_RESYNC
+                        value: "1"
+            volumes:
+                - name: data
+                  persistentVolumeClaim:
+                      claimName: onedrive-data
+                - name: conf
+                  persistentVolumeClaim:
+                      claimName: onedrive-settings

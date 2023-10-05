@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: settings-editor
+spec:
+    replicas: 0
+    selector:
+        matchLabels:
+            app: settings-editor
+    template:
+        metadata:
+            labels:
+                app: settings-editor
+        spec:
+            containers:
+                - name: settings-editor
+                  image: francescorisso/pmd-edit-settings:latest
+                  resources:
+                      limits:
+                          memory: "128Mi"
+                          cpu: "250m"
+                  volumeMounts:
+                      - mountPath: /copy-settings/onedrive_settings
+                        name: onedrive-conf
+                      - mountPath: /copy-settings/polito_material_download_settings
+                        name: pmd-conf
+                      - mountPath: /onedrive-data
+                        name: onedrive-data
+            volumes:
+                - name: onedrive-conf
+                  persistentVolumeClaim:
+                      claimName: onedrive-settings
+                - name: pmd-conf
+                  persistentVolumeClaim:
+                      claimName: pmd-settings
+                - name: onedrive-data
+                  persistentVolumeClaim:
+                      claimName: onedrive-data

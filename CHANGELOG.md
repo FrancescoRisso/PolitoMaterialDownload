@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.13.0
+
+MAIN UPDATES:
+
+-   Added kubernetes deployment files
+
 ## Version 1.12.0
 
 MAIN UPDATES:

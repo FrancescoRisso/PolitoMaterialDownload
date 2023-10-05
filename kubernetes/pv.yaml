@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pmd-settings
+spec:
+    capacity:
+        storage: 30Ki
+    accessModes:
+        - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Retain
+    storageClassName: manual
+    hostPath:
+        path: "/mnt/pmd/pmd-settings"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: onedrive-settings
+spec:
+    capacity:
+        storage: 10Mi
+    accessModes:
+        - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Retain
+    storageClassName: manual
+    hostPath:
+        path: "/mnt/pmd/onedrive-settings"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: onedrive-data
+spec:
+    capacity:
+        storage: 2Gi
+    accessModes:
+        - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Retain
+    storageClassName: manual
+    hostPath:
+        path: "/mnt/pmd/onedrive-data"

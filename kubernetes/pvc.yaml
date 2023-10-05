@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: onedrive-data
+spec:
+    storageClassName: manual
+    resources:
+        requests:
+            storage: 2Gi
+    accessModes:
+        - ReadWriteOnce
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: onedrive-settings
+spec:
+    storageClassName: manual
+    resources:
+        requests:
+            storage: 10Mi
+    accessModes:
+        - ReadWriteOnce
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: pmd-settings
+spec:
+    storageClassName: manual
+    resources:
+        requests:
+            storage: 30Ki
+    accessModes:
+        - ReadWriteOnce

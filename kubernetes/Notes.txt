@@ -1,0 +1,18 @@
+- inserire namespace.yaml
+- inserire pv.yaml
+- inserire pvc.yaml
+- inserire settings_editor.yaml
+- scalarlo a 1 replica
+- controllare che /copy-settings/onedrive_settings contenga esattamente:
+	- default-config
+	- login_link (vuoto)
+	- (eventualmente) config settato da me
+-controllare che /onedrive-data sia vuoto
+- inserire onedrive-link-printer.yaml
+- il container creato fallirà, è normale: permette di copiare dal suo log il link, e a quel punto ha raggiunto il suo scopo (e può essere rimosso)
+- fare il login su onedrive
+- incollare il link risultato nel file login_link
+- modificare le impostazioni di pmd
+- riscalare l'editor a 0 repliche
+- inserire onedrive.yaml
+
