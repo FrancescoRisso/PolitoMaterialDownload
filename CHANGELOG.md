@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.12.0
+
+MAIN UPDATES:
+
+-   Added docker support
+
 ## Version 1.11.0
 
 NOTE: please move your settings.yaml into the settings directory
@@ -8,7 +14,6 @@ MAIN UPDATES:
 
 -   Moved all the settings to a subfolder
 -	Improved reliability of the moving of the files
-
 
 ## Version 1.10.1
 

@@ -1,0 +1,74 @@
+version: "3"
+
+volumes:
+    onedrive-data:
+    onedrive-config:
+    pmd-config:
+
+services:
+    edit-settings:
+        image: francescorisso/pmd-edit-settings:latest
+        # build:
+        #     context: .
+        #     dockerfile: settings.Dockerfile
+        volumes:
+            - onedrive-config:/copy-settings/onedrive_settings
+            - pmd-config:/copy-settings/polito_material_download_settings
+        # deploy:
+        #     restart_policy:
+        #         condition: "no"
+        healthcheck:
+            test: python3 /copy-settings/healthChecker.py
+            interval: 1s
+            retries: 5
+            start_period: 10m
+
+    onedrive-print-link:
+        image: francescorisso/custom-onedrive:latest
+        # build:
+        #     context: .
+        #     dockerfile: Onedrive.Dockerfile
+        environment:
+            - ONEDRIVE_UID=1000
+            - ONEDRIVE_GID=1000
+            - QUIT_AFTER_LINK=1
+            - ONEDRIVE_RESYNC=1
+        stdin_open: true
+        tty: true
+
+    onedrive:
+        image: francescorisso/custom-onedrive:latest
+        # build:
+        #     context: .
+        #     dockerfile: Onedrive.Dockerfile
+        volumes:
+            - onedrive-data:/onedrive/data
+            - onedrive-config:/onedrive/conf
+        restart: unless-stopped
+        environment:
+            - ONEDRIVE_UID=1000
+            - ONEDRIVE_GID=1000
+            - ONEDRIVE_RESYNC=1
+        stdin_open: true
+        tty: true
+        depends_on:
+            edit-settings:
+                condition: service_completed_successfully
+
+    polito-material-downloader:
+        image: francescorisso/polito-material-downloader
+        # build:
+        #     context: ..
+        #     dockerfile: ./docker/Dockerfile
+        depends_on:
+            - "onedrive"
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+        environment:
+            - cronSettings=0 7-21 * * *
+        volumes:
+            - pmd-config:/PolitoMaterialDownload/settings
+            - onedrive-data:/PolitoMaterialDownload/data
