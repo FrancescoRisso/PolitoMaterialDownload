@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.1
+
+BUG FIXES:
+
+-   Fixed github action pulling non-existent branch
+
 ## Version 1.14.0
 
 MAIN UPDATES:
