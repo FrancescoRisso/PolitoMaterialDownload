@@ -29,7 +29,7 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   context: ./docker
-                  file: ./settings.Dockerfile
+                  file: ./docker/settings.Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKER_HUB_USERNAME }}/pmd-edit-settings:latest
 
@@ -57,7 +57,7 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   context: ./docker
-                  file: ./Onedrive.Dockerfile
+                  file: ./docker/Onedrive.Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKER_HUB_USERNAME }}/custom-onedrive:latest
 
