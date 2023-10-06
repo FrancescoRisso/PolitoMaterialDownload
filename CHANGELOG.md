@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.2
+
+BUG FIXES:
+
+-   Fixed auto-containerize wrong dockerfile settings
+
 ## Version 1.14.1
 
 BUG FIXES:
