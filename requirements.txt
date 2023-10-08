@@ -1,4 +1,4 @@
 pyTelegramBotAPI==4.4.0
-PyYAML==6.0
+PyYAML==6.0.1
 selenium==4.1.2
 webdriver_manager==3.5.3
