@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.3
+
+BUG FIXES:
+
+-   Added the italian timezone hardcoded to the container, since the PoliTo portal uses that timezone
+
 ## Version 1.14.2
 
 BUG FIXES:

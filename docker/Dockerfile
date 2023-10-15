@@ -1,7 +1,11 @@
 FROM ubuntu:latest
 
 RUN apt update
-RUN apt -y install cron nano python3 python3-pip software-properties-common
+RUN apt -y install cron nano python3 python3-pip software-properties-common tzdata
+
+ENV TZ=Europe/Rome
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN add-apt-repository -y ppa:mozillateam/ppa
 RUN echo '\nPackage: *\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 1001\n' | tee /etc/apt/preferences.d/mozilla-firefox
 RUN apt install -y firefox
