@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt update
-RUN apt -y install cron nano python3 python3-pip software-properties-common tzdata
+RUN noninteractive apt -y install cron nano python3 python3-pip software-properties-common tzdata
 
 ENV TZ=Europe/Rome
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
