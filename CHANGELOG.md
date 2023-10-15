@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.5
+
+BUG FIXES:
+
+-   Fixed container build failing due to required user input
+
 ## Version 1.14.4
 
 BUG FIXES:
