@@ -1,6 +1,12 @@
 # Changelog
 
-## Version 1.15
+## Version 1.15.1
+
+BUG FIXES:
+
+-   Solved "backslash cannot be in a f-string value"
+
+## Version 1.15.0
 
 MAIN UPDATES:
 
@@ -73,13 +79,13 @@ NOTE: please move your settings.yaml into the settings directory
 MAIN UPDATES:
 
 -   Moved all the settings to a subfolder
--	Improved reliability of the moving of the files
+-   Improved reliability of the moving of the files
 
 ## Version 1.10.1
 
 BUG FIXES:
 
--	Added notes to the readme about the required working directory
+-   Added notes to the readme about the required working directory
 
 ## Version 1.10.0
 
@@ -89,19 +95,19 @@ MAIN UPDATES:
 
 BUG FIXES:
 
--	Program was crashing after exploring a folder
+-   Program was crashing after exploring a folder
 
 ## Version 1.9.4
 
 BUG FIXES:
 
--	Script could not terminate the login phase
+-   Script could not terminate the login phase
 
 ## Version 1.9.3
 
 BUG FIXES:
 
--	Fixed the login not working anymore due to the recent website restyling
+-   Fixed the login not working anymore due to the recent website restyling
 
 ## Version 1.9.2
 

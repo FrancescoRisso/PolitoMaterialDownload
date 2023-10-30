@@ -71,7 +71,8 @@ def telegramLog(newMessageToInsert, type):
 	# Append the new message to the final message if the user requested the whole log,
 	# or if the message is an error or does not come from log (type=="")
 	if msgType == "log" or type == "ERR" or (type == "" and msgType != "error"):
-		finalMessage = f"{finalMessage}{'' if len(finalMessage) == 0 else '\n'}{newMessageToInsert}"
+		middleChar = '' if len(finalMessage) == 0 else '\n'
+		finalMessage = f"{finalMessage}{middleChar}{newMessageToInsert}"
 		return
 
 
