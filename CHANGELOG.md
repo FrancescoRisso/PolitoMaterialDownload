@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.6
+
+BUG FIXES:
+
+-   Updated my kubernetes schedule for running the script from 8AM to 20PM
+
 ## Version 1.14.5
 
 BUG FIXES:
