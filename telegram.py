@@ -71,7 +71,7 @@ def telegramLog(newMessageToInsert, type):
 	# Append the new message to the final message if the user requested the whole log,
 	# or if the message is an error or does not come from log (type=="")
 	if msgType == "log" or type == "ERR" or (type == "" and msgType != "error"):
-		finalMessage = f"{finalMessage}\n```\n{newMessageToInsert}```"
+		finalMessage = f"{finalMessage}{'' if len(finalMessage) == 0 else '\n'}{newMessageToInsert}"
 		return
 
 
@@ -90,7 +90,7 @@ def telegramLog(newMessageToInsert, type):
 def splitText(text):
 	splitted = []
 	if len(text) > 4000:
-		index = 3 + text[:4000].rfind("```\n`")
+		index = text[:4000].rfind("\n")
 		splitted.append(text[:index])
 		for el in splitText(text[index + 1 :]):
 			splitted.append(el)
@@ -110,7 +110,7 @@ def telegramSendMessage():
 	# If connection is correct and message is not empty, split text and send it
 	if conn != None and finalMessage != "":
 		for part in splitText(finalMessage):
-			conn.send_message(chatId, part, parse_mode="MarkdownV2")
+			conn.send_message(chatId, f"`{part}`", parse_mode="MarkdownV2")
 
 	# Reset the message
 	finalMessage = ""

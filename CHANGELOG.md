@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.15
+
+MAIN UPDATES:
+
+-   Telegram message restored to how it was prior to the last Telegram update
+
 ## Version 1.14.7
 
 BUG FIXES:
