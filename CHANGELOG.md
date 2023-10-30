@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.14.7
+
+BUG FIXES:
+
+-   Updated kubernetes config to avoid creating lots of queued containers if resources are not enough
+
 ## Version 1.14.6
 
 BUG FIXES:

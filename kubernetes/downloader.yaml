@@ -4,6 +4,7 @@ metadata:
     name: polito-material-download
 spec:
     schedule: "0 7-19 * * *"
+    concurrencyPolicy: Replace
     jobTemplate:
         spec:
             backoffLimit: 3
