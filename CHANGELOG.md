@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.15.2
+
+BUG FIXES:
+
+-   Fixed error when downloading large files
+-   Fixed error while working on course, due to problems in backtracking
+
 ## Version 1.15.1
 
 BUG FIXES:

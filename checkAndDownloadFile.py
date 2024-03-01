@@ -125,7 +125,7 @@ def checkAndDownloadFile(
 			finalFileName = os.path.join(settings["tmpDownloadFolder"], sorted(os.listdir(settings["tmpDownloadFolder"]))[-1])
 
 			# If download is complete, move it to the correct location, then stop checking
-			if not finalFileName.endswith(".part"):
+			if not finalFileName.endswith(".part") and len(os.listdir(settings["tmpDownloadFolder"])) == 1:
 
 				# If there is an outdated file
 				if os.path.exists(completeFilePath):

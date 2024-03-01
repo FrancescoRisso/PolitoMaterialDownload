@@ -109,7 +109,10 @@ def exploreFolder(websitePath, renaming, settings, portale, thereIsDropbox, down
 
 			# Return to the parent folder
 			xpath = "//ol[contains(@class,'breadcrumb')]/li[position() = (last()-2)]/a"
+			
+			time.sleep(settings["waitTime"])
 			prevFolder = findInPortale(portale, xpath, False, False)
+			
 			if prevFolder != None:
 				prevFolder.click()
 			else:
